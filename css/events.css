@@ -1,0 +1,97 @@
+/* ===================== EVENTS — VISION BOARD OF EVENT COVERS ===================== */
+
+.events-header{ text-align:center; margin-bottom: 40px; }
+.events-header .label{ margin-bottom: 8px; }
+.events-header h1{ font-size: clamp(28px, 4.4vw, 44px); }
+.events-header p{ max-width: 640px; margin: 14px auto 0; color: var(--ink-soft); font-size: 16px; line-height:1.7; }
+
+/* ---------- masonry pinboard of real event covers ---------- */
+.events-grid{
+  columns: 3 260px;
+  column-gap: 22px;
+}
+@media (max-width: 640px){
+  .events-grid{ columns: 1 260px; }
+}
+
+.event-tile{
+  position: relative;
+  break-inside: avoid;
+  margin-bottom: 26px;
+  background: var(--paper-card);
+  border-radius: 4px;
+  box-shadow: 0 12px 22px rgba(0,0,0,0.14);
+  overflow: hidden;
+  transform: rotate(var(--tilt, 0deg));
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.event-tile:hover{
+  transform: rotate(0deg) translateY(-4px) scale(1.015);
+  box-shadow: 0 20px 32px rgba(0,0,0,0.2);
+  z-index: 2;
+}
+.event-tile.flash{
+  animation: event-flash 1.8s ease;
+}
+@keyframes event-flash{
+  0%, 100%{ box-shadow: 0 12px 22px rgba(0,0,0,0.14); }
+  20%, 60%{ box-shadow: 0 0 0 4px var(--c), 0 20px 32px rgba(0,0,0,0.22); }
+}
+
+.event-cover{ display: block; line-height: 0; background: var(--c); }
+.event-cover img{ width: 100%; height: auto; display: block; }
+
+.event-info{ padding: 14px 16px 18px; }
+.event-loc{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--muted);
+}
+.event-type{
+  display: inline-block;
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--c);
+  border: 1px solid var(--c);
+  border-radius: 20px;
+  padding: 2px 9px;
+}
+.event-name{
+  display: block;
+  margin-top: 8px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15.5px;
+  line-height: 1.35;
+  color: var(--ink);
+  transition: color .2s ease;
+}
+.event-name:hover{ color: var(--c); }
+.event-note{
+  margin: 6px 0 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+.event-links{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin-top: 8px;
+}
+.event-links a{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink);
+  border-bottom: 1px dashed var(--line);
+  transition: color .2s ease, border-color .2s ease;
+}
+.event-links a:hover{ color: var(--stamp-red); border-color: var(--stamp-red); }

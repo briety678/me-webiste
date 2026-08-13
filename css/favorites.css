@@ -1,0 +1,87 @@
+/* ===================== FAVORITES ===================== */
+
+.fav-header{ text-align:center; margin-bottom: 50px; }
+.fav-header .label{ margin-bottom: 8px; }
+.fav-header h1{ font-size: clamp(28px, 4.4vw, 44px); }
+.fav-header p{ max-width: 560px; margin: 14px auto 0; color: var(--ink-soft); font-size: 16px; line-height:1.6; }
+
+.fav-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 28px 24px;
+}
+
+.fav-card{
+  height: 320px;
+  perspective: 1200px;
+}
+.fav-card-inner{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform .6s cubic-bezier(.3,.9,.3,1);
+  transform-style: preserve-3d;
+}
+.fav-card:hover .fav-card-inner,
+.fav-card.flipped .fav-card-inner{ transform: rotateY(180deg); }
+
+.fav-card-front,
+.fav-card-back{
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  background: var(--paper-card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.07);
+  padding: 18px 18px 16px;
+}
+.fav-card-front{
+  display: flex;
+  flex-direction: column;
+}
+.fav-card .fav-thumb{
+  flex: 1;
+  background: var(--paper-dark);
+  border: 1px dashed var(--line);
+  border-radius: 6px;
+  display:flex; align-items:center; justify-content:center;
+  font-family: var(--font-mono); font-size: 11px; color: var(--muted);
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+.fav-card .fav-thumb img{ width:100%; height:100%; object-fit:cover; }
+.fav-card .fav-tag{
+  display:inline-block; font-family: var(--font-mono); font-size: 10px; text-transform:uppercase;
+  letter-spacing:.06em; color: var(--stamp-red); border: 1px solid var(--stamp-red);
+  border-radius: 20px; padding: 2px 9px; margin-bottom: 8px; width: fit-content;
+}
+.fav-card .fav-name{ font-family: var(--font-display); font-weight:700; font-size: 16px; line-height:1.3; }
+
+.fav-card-back{
+  transform: rotateY(180deg);
+  background: var(--ink);
+  color: var(--paper);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+}
+.fav-card-back .fav-name{ color: var(--paper); }
+.fav-card-back .fav-note{
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.75);
+}
+
+.fav-hint{
+  text-align:center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: .05em;
+  margin-top: 34px;
+}

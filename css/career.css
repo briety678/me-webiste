@@ -1,0 +1,195 @@
+/* ===================== CAREER / VISA PAGES ===================== */
+
+.visa-header{ text-align:center; margin-bottom: 40px; }
+.visa-header .label{ margin-bottom: 8px; }
+.visa-header h1{ font-size: clamp(28px, 4.4vw, 44px); margin-bottom: 18px; }
+
+.visa-toc{
+  display:flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content:center;
+  margin-bottom: 46px;
+}
+.visa-toc button{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 8px 14px;
+  min-height: 40px;
+  border-radius: 20px;
+  border: 1.5px solid var(--line);
+  background: var(--paper-card);
+  color: var(--ink-soft);
+  transition: all .2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.visa-toc button.active{
+  border-color: var(--stamp-red);
+  color: var(--stamp-red);
+  background: #fff;
+}
+.toc-logo{ max-height: 22px; max-width: 90px; object-fit: contain; }
+.toc-logo-pair{ display: flex; align-items: center; gap: 8px; }
+.toc-logo-pair img{ max-height: 18px; max-width: 50px; object-fit: contain; }
+
+.visa-book{
+  display:flex;
+  align-items:stretch;
+  gap: 16px;
+}
+.visa-arrow{
+  flex: none;
+  width: 44px; height: 44px;
+  align-self: center;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+  background: var(--paper-card);
+  font-size: 20px;
+  display:flex; align-items:center; justify-content:center;
+  transition: transform .15s ease, background .15s ease;
+  z-index: 20;
+}
+.visa-arrow:hover{ background: var(--ink); color: var(--paper); }
+.visa-arrow:disabled{ opacity: .3; pointer-events:none; }
+
+/* the stage establishes the 3D space; spread + flip-leaf are stacked inside it */
+.book-stage{
+  flex: 1;
+  position: relative;
+  min-height: 420px;
+  perspective: 2000px;
+}
+
+.visa-spread,
+.flip-leaf{
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  min-height: 420px;
+  background: var(--paper-card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.16);
+  overflow: hidden;
+}
+.visa-spread{
+  position: relative; width: 100%; height: 100%;
+  transition: transform .18s ease-out;
+  will-change: transform;
+}
+.book-stage{ cursor: pointer; }
+.book-stage.at-left-edge{ cursor: w-resize; }
+.book-stage.at-right-edge{ cursor: e-resize; }
+
+.flip-leaf{
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  transform-origin: left center;
+  backface-visibility: hidden;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+.flip-leaf.flip-next{ animation: flipNext .62s cubic-bezier(.45,.05,.35,1) forwards; }
+.flip-leaf.flip-prev{ animation: flipPrev .62s cubic-bezier(.45,.05,.35,1) forwards; }
+@keyframes flipNext{
+  0%{ transform: rotateY(0deg); box-shadow: 0 30px 60px rgba(0,0,0,0.16); }
+  60%{ box-shadow: -20px 20px 50px rgba(0,0,0,0.3); }
+  100%{ transform: rotateY(-178deg); }
+}
+@keyframes flipPrev{
+  0%{ transform: rotateY(0deg); box-shadow: 0 30px 60px rgba(0,0,0,0.16); }
+  60%{ box-shadow: 20px 20px 50px rgba(0,0,0,0.3); }
+  100%{ transform: rotateY(178deg); }
+}
+@media (prefers-reduced-motion: reduce){
+  .flip-leaf.flip-next, .flip-leaf.flip-prev{ animation-duration: .01s; }
+}
+
+.visa-page{ padding: 32px 30px; }
+.visa-page--stamp{
+  border-right: 2px dashed var(--line);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+  gap: 16px;
+}
+.visa-page--stamp .stamp{ width:150px; height:150px; }
+.stamp-logo{
+  max-width: 62%;
+  max-height: 42px;
+  object-fit: contain;
+  margin-bottom: 6px;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.06));
+}
+.stamp-logo-pair{ display:flex; align-items:center; gap: 8px; margin-bottom: 6px; }
+.stamp-logo-pair img{ max-width: 40px; max-height: 30px; object-fit: contain; }
+.visa-page--stamp .visa-dates{ font-family: var(--font-mono); font-size: 13px; color: var(--ink-soft); }
+.visa-page--stamp .visa-company{ font-family: var(--font-display); font-weight:700; font-size: 22px; }
+
+.visa-page--detail .label{ margin-bottom: 4px; }
+.visa-page--detail .visa-role{ font-size: 20px; font-family: var(--font-display); font-weight: 600; margin-bottom: 4px; }
+.visa-sub-purpose{ font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-bottom: 18px; }
+.visa-endorsements{ list-style:none; margin: 0 0 22px; padding: 0; display:flex; flex-direction:column; gap: 10px; }
+.visa-endorsements li{
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  padding-left: 22px;
+  position: relative;
+  line-height:1.5;
+}
+.visa-endorsements li::before{
+  content: '✓';
+  position:absolute; left:0; top:0;
+  color: var(--stamp-green);
+  font-family: var(--font-mono);
+}
+
+.case-toggle{ margin-top: 4px; }
+
+.case-study{
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .45s ease;
+}
+.case-study.open{ max-height: 900px; }
+.case-study-inner{ padding-top: 20px; border-top: 1px dashed var(--line); margin-top: 20px; display:grid; gap:14px; }
+.case-block .label{ margin-bottom:4px; }
+.case-block p{ margin: 0; font-size: 14.5px; line-height:1.6; color: var(--ink-soft); }
+
+.visa-progress{
+  text-align:center;
+  margin-top: 22px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+@media (max-width: 760px){
+  .visa-spread, .flip-leaf{ grid-template-columns: 1fr; }
+  .visa-page--stamp{ border-right:none; border-bottom: 2px dashed var(--line); padding: 26px 24px; }
+  .visa-book{ gap: 8px; }
+  .visa-arrow{ width: 36px; height:36px; }
+}
+
+/* ---- skills spread (merged from the old standalone skills page) ---- */
+.visa-page--skills{ display:flex; flex-direction:column; gap: 22px; }
+.skills-funnel{ display:flex; flex-direction:column; gap: 8px; }
+.skills-row{ display:flex; align-items:center; gap: 12px; }
+.skills-row .sk-label{
+  flex: none; width: 92px;
+  font-family: var(--font-mono); font-size: 10px; font-weight:700;
+  color: var(--paper); text-align:center;
+  padding: 6px 4px; border-radius: 3px;
+  text-transform: uppercase; letter-spacing: .04em;
+}
+.skills-row .sk-tags{ display:flex; flex-wrap:wrap; gap: 6px; }
+.skills-row .sk-tags span{
+  font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-soft);
+  border: 1px solid var(--line); background: var(--paper); border-radius: 14px;
+  padding: 3px 9px;
+}
+.skills-tools{ display:flex; flex-wrap:wrap; gap: 8px; }
+.skills-tools span{
+  font-family: var(--font-mono); font-size: 11px; color: var(--ink);
+  border: 1.5px solid var(--ink); border-radius: 5px; padding: 5px 11px;
+}

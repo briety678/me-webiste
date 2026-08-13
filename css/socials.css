@@ -1,0 +1,58 @@
+/* ===================== SOCIALS — real icon photos, scattered ===================== */
+
+.socials-header{ text-align:center; margin-bottom: 70px; }
+.socials-header .label{ margin-bottom: 8px; }
+.socials-header h1{ font-size: clamp(28px, 4.4vw, 44px); }
+.socials-header p{ max-width: 480px; margin: 14px auto 0; color: var(--ink-soft); font-size: 16px; line-height:1.6; }
+
+.icon-grid{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 46px 36px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.icon-card{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 190px;
+  transition: transform .25s ease, filter .25s ease;
+}
+.icon-card:nth-child(1){ transform: rotate(-3deg); }
+.icon-card:nth-child(2){ transform: rotate(2deg); }
+.icon-card:nth-child(3){ transform: rotate(-2deg); }
+.icon-card:nth-child(4){ transform: rotate(3deg); }
+.icon-card:hover{ transform: translateY(-8px) rotate(0deg) !important; }
+.icon-card:hover .icon-photo{ box-shadow: 0 22px 38px rgba(0,0,0,0.24), 0 2px 0 rgba(0,0,0,0.06); }
+
+.icon-photo{
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  box-shadow: 0 14px 26px rgba(0,0,0,0.16), 0 2px 0 rgba(0,0,0,0.06);
+  display: block;
+  transition: box-shadow .25s ease;
+}
+
+.device-label{
+  margin-top: 16px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: .04em;
+  color: var(--ink);
+}
+.device-handle{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+@media (max-width: 700px){
+  .icon-grid{ gap: 40px 24px; }
+  .icon-card{ width: 42%; }
+}

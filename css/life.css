@@ -1,0 +1,283 @@
+/* ===================== LIFE / OUTSIDE WORK ===================== */
+
+.about-hero{ text-align:center; margin-bottom: 36px; }
+.about-hero h1{ font-size: clamp(32px, 5.4vw, 56px); }
+.about-hero .hand{
+  display:block;
+  font-family: var(--font-mono);
+  font-size: clamp(13px, 1.6vw, 15px);
+  letter-spacing: .04em;
+  color: var(--ink-soft);
+  margin-top: 10px;
+}
+
+.about-spread{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-radius: var(--radius-md);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.16), 0 2px 0 rgba(0,0,0,0.08);
+  overflow: hidden;
+  transform: rotate(-1deg);
+  margin-bottom: 40px;
+}
+.about-page{ padding: 34px 30px; position: relative; }
+.about-page--stamps{
+  border-right: 2px dashed var(--line);
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: 18px 22px;
+  min-height: 300px;
+}
+.about-page--stamps .stamp{ width: 132px; height: 128px; }
+
+.about-id-photo{
+  width: 118px; height: 140px;
+  border-radius: 4px;
+  background: var(--paper-dark);
+  border: 2px solid var(--ink);
+  display:flex; align-items:center; justify-content:center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  text-align:center;
+  float: left;
+  margin: 0 18px 12px 0;
+  overflow: hidden;
+}
+.about-id-photo img{ width:100%; height:100%; object-fit: cover; }
+
+.about-id-block .label{ margin-top: 12px; }
+.edu-logos{ display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; align-items: center; }
+.edu-logo-item{
+  position: relative;
+  height: 40px;
+  border-radius: 6px;
+  background: #fff;
+  border: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  padding: 6px 12px;
+  cursor: default;
+}
+.edu-logo-item img{ height: 100%; width: auto; max-width: 140px; object-fit: contain; display: block; }
+.edu-text-logo{
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
+.edu-degree{
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease, transform .2s ease;
+  z-index: 5;
+}
+.edu-logo-item:hover .edu-degree{
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.about-id-block .val{ font-family: var(--font-mono); font-size: 14px; margin-bottom: 2px; }
+.about-id-name{
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+}
+
+.about-mrz{
+  clear: both;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .06em;
+  color: var(--muted);
+  margin-top: 20px;
+  line-height: 1.6;
+  word-break: break-all;
+}
+
+@media (max-width: 760px){
+  .about-spread{ grid-template-columns: 1fr; transform: none; }
+  .about-page--stamps{ border-right: none; border-bottom: 2px dashed var(--line); }
+}
+
+/* ---------- about photos: draggable colorful polaroids floating beside the bio ---------- */
+.about-story-wrap{
+  position: relative;
+  margin-bottom: 48px;
+}
+/* ---------- the full personal story ---------- */
+.about-story{
+  max-width: 660px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.about-story p{
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--ink-soft);
+  margin: 0 0 20px;
+}
+.about-story .story-lead{
+  font-size: 19px;
+  color: var(--ink);
+}
+.about-story p a{
+  color: var(--ink);
+  border-bottom: 1px solid var(--stamp-green);
+  transition: color .2s ease, border-color .2s ease;
+}
+.about-story p a:hover{
+  color: var(--stamp-green);
+}
+.about-story .story-signoff{
+  margin-top: 30px;
+  text-align: center;
+  font-family: var(--font-hand);
+  font-size: 22px;
+  line-height: 1.4;
+  color: var(--stamp-green);
+}
+
+.polaroid{
+  position: absolute;
+  width: 168px;
+  background: #fff;
+  padding: 10px 10px 30px;
+  box-shadow: 0 16px 30px rgba(0,0,0,0.18), 0 2px 0 rgba(0,0,0,0.06);
+  cursor: grab;
+  user-select: none;
+  transition: transform .2s ease, box-shadow .2s ease;
+  z-index: 2;
+}
+.polaroid:active{ cursor: grabbing; z-index: 10; }
+.polaroid:hover{ box-shadow: 0 22px 38px rgba(0,0,0,0.24), 0 2px 0 rgba(0,0,0,0.06); }
+.polaroid.is-dragging{ transition: none; z-index: 10; }
+
+.polaroid-photo{
+  aspect-ratio: 4/5;
+  overflow: hidden;
+  background: var(--paper-dark);
+}
+.polaroid-photo img,
+.polaroid-photo video{
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+.polaroid-caption{
+  font-family: var(--font-hand);
+  font-size: 17px;
+  color: var(--ink-soft);
+  text-align: center;
+  padding-top: 8px;
+}
+
+.pol-1{ top: 30px;  left: 0;    transform: rotate(-6deg); }
+.pol-2{ top: 200px; right: 0;   transform: rotate(5deg); width: 186px; }
+.pol-3{ top: 720px; left: 10px; transform: rotate(4deg); width: 180px; }
+.pol-4{ top: 460px; right: 6px; transform: rotate(-4deg); width: 172px; cursor: pointer; }
+
+@media (max-width: 1180px){
+  .pol-1{ left: -10px; }
+  .pol-2{ right: -10px; }
+  .pol-3{ left: 0; }
+  .pol-4{ right: -6px; }
+}
+
+@media (max-width: 980px){
+  .about-story-wrap{ padding: 0 190px; }
+}
+
+@media (max-width: 860px){
+  .about-story-wrap{ padding: 0; }
+  .polaroid{
+    position: static;
+    transform: none !important;
+    width: 46%;
+    display: inline-block;
+    margin: 0 2% 24px;
+  }
+}
+
+/* ---------- food recs easter egg (modal) ---------- */
+.food-modal{
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease;
+}
+.food-modal.is-open{ opacity: 1; pointer-events: auto; }
+.food-modal-backdrop{
+  position: absolute;
+  inset: 0;
+  background: rgba(20,18,14,0.55);
+}
+.food-modal-card{
+  position: relative;
+  background: var(--paper-card);
+  width: 560px;
+  max-width: 100%;
+  max-height: 82vh;
+  overflow-y: auto;
+  padding: 34px 30px 30px;
+  border-radius: var(--radius-md);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.35);
+  transform: translateY(16px) scale(.97);
+  transition: transform .25s cubic-bezier(.34,1.56,.64,1);
+}
+.food-modal.is-open .food-modal-card{ transform: translateY(0) scale(1); }
+.food-modal-card h3{
+  margin: 6px 0 20px;
+  font-size: clamp(22px, 3vw, 27px);
+}
+.food-modal-close{
+  position: absolute;
+  top: 14px; right: 16px;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: #fff;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--ink);
+}
+.food-modal-close:hover{ background: var(--paper-dark); }
+.food-list{ display: grid; gap: 11px; }
+.food-row{
+  display: grid;
+  grid-template-columns: 128px 1fr;
+  gap: 12px;
+  padding-bottom: 9px;
+  border-bottom: 1px dashed var(--line);
+}
+.food-cat{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--muted);
+  padding-top: 2px;
+}
+.food-val{ font-size: 14px; line-height: 1.5; color: var(--ink); }
+
+@media (max-width: 560px){
+  .food-row{ grid-template-columns: 1fr; gap: 3px; }
+}

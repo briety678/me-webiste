@@ -1,0 +1,299 @@
+/* ===================== HOME — SCATTERED FLATLAY (illustrated objects) ===================== */
+
+.flatlay{
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.flatlay-canvas{
+  position: relative;
+  width: 100%;
+  min-height: 1220px;
+}
+
+.flatlay-item{
+  position: absolute;
+  width: 340px;
+  background: none;
+  border: none;
+  text-align: center;
+  cursor: pointer;
+  opacity: 1;
+  animation: item-float 7.5s ease-in-out infinite;
+  animation-delay: var(--delay, 0ms);
+}
+.flatlay-item.is-dragging{ animation: none !important; cursor: grabbing; z-index: 40; }
+.flatlay-item:not(.is-dragging):hover{
+  animation-play-state: paused;
+  transform: translateY(-8px) scale(1.03) rotate(var(--rot, 0deg)) !important;
+  z-index: 30;
+}
+/* images/video must never trigger the browser's native drag-and-drop —
+   that hijacks our custom drag and turns every move into an accidental click */
+.flatlay-item img,
+.flatlay-item video{
+  -webkit-user-drag: none;
+  user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.obj-photo-frame{
+  position: relative;
+  display: block;
+  background: none;
+  border: none;
+  padding: 0;
+}
+/* contact shadow: a blurred ellipse instead of drop-shadow, since plain JPGs
+   have no alpha channel and drop-shadow would box the whole rectangle */
+.obj-photo-frame::after{
+  content: '';
+  position: absolute;
+  left: 50%; bottom: 2px;
+  transform: translateX(-50%);
+  width: 62%; height: 16px;
+  background: radial-gradient(ellipse, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 72%);
+  filter: blur(5px);
+  z-index: 0;
+  transition: opacity .25s ease;
+}
+.flatlay-item:hover .obj-photo-frame::after{ opacity: .7; }
+/* ---------- rising steam over the coffee cup (Professional icon) ---------- */
+.steam{
+  position: absolute;
+  left: 29%;
+  top: 30%;
+  width: 1px;
+  height: 1px;
+  z-index: 2;
+  pointer-events: none;
+}
+.steam-wisp{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 7px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.75);
+  filter: blur(3px);
+  opacity: 0;
+  animation: steam-rise 3.2s ease-in infinite;
+}
+.steam-wisp:nth-child(1){ left: -10px; animation-delay: 0s; }
+.steam-wisp:nth-child(2){ left: 0px;   animation-delay: 1.05s; }
+.steam-wisp:nth-child(3){ left: 9px;   animation-delay: 2.1s; }
+.flatlay-item:hover .steam-wisp{ animation-duration: 2s; }
+@keyframes steam-rise{
+  0%{ transform: translateY(0) translateX(0) scaleX(1); opacity: 0; }
+  15%{ opacity: .65; }
+  55%{ transform: translateY(-30px) translateX(4px) scaleX(1.3); opacity: .4; }
+  100%{ transform: translateY(-58px) translateX(-3px) scaleX(1.6); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce){
+  .steam-wisp{ animation: none; opacity: 0; }
+}
+@media (max-width: 860px){
+  .steam{ display: none; }
+}
+
+.obj-photo-frame img{
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  mix-blend-mode: multiply;
+}
+
+.obj-caption{
+  display: block;
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: .02em;
+  color: var(--ink-soft);
+  line-height: 1.25;
+}
+.obj-caption small{
+  display:block;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-top: 3px;
+  letter-spacing: .02em;
+}
+
+/* --- placements (desktop): six large objects, condensed close around the greeting --- */
+.pos-1{ top: 2%;  left: 3%;  --rot: -6deg; z-index: 2; }
+.pos-2{ top: 0%;  left: 33%; --rot: 5deg;  width: 320px; z-index: 2; }
+.pos-3{ top: 2%;  left: 65%; --rot: -5deg; width: 340px; z-index: 2; }
+.pos-4{ top: 61%; left: 3%;  --rot: 5deg;  z-index: 2; }
+.pos-5{ top: 57%; left: 33%; --rot: -4deg; width: 300px; z-index: 2; }
+.pos-6{ top: 59%; left: 65%; --rot: 4deg;  width: 320px; z-index: 2; }
+
+/* ---------- Spotify — real embed, plays in place ---------- */
+.obj-music{ cursor: default; }
+.obj-music:not(.is-dragging):hover{ transform: translateY(-8px) rotate(var(--rot, 0deg)) !important; }
+.music-stack{
+  position: relative;
+  padding-top: 84px;
+}
+.vinyl-disc{
+  position: absolute;
+  top: 0;
+  right: 8px;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.28);
+  animation: vinyl-spin 6s linear infinite;
+  animation-play-state: paused;
+}
+.obj-music:hover .vinyl-disc{ animation-play-state: running; }
+.music-iframe{ display: block; border-radius: 10px; }
+@keyframes vinyl-spin{ from{ transform: rotate(0deg); } to{ transform: rotate(360deg); } }
+
+/* ---------- camera + a real video clip playing on its screen → Socials ---------- */
+.camera-frame{
+  position: relative;
+  filter: drop-shadow(0 18px 20px rgba(0,0,0,0.2));
+}
+.camera-frame img{ width: 100%; display: block; }
+.camera-screen{
+  position: absolute;
+  left: 10.3%; top: 46.9%;
+  width: 51.2%; height: 43.1%;
+  object-fit: cover;
+}
+
+/* ---------- AirDrop mini-card, with a real photo → email ----------
+   the photo strip is sized to the source photo's own 3:4 portrait ratio
+   instead of a fixed crop, so nothing gets awkwardly cut off. */
+.obj-airdrop{ width: 300px; }
+.airdrop-mini{
+  border-radius: 20px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 18px 34px rgba(0,0,0,0.22);
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  text-align: left;
+}
+.airdrop-mini-top{ padding: 14px 16px 10px; text-align: center; }
+.airdrop-mini-title{ font-weight: 700; font-size: 15px; color: #111; }
+.airdrop-mini-msg{ font-size: 11.5px; color: #555; margin-top: 3px; line-height: 1.35; }
+.airdrop-mini-photo{
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  height: auto;
+  object-fit: cover;
+  object-position: center 30%;
+}
+.airdrop-mini-bottom{
+  display: flex;
+  justify-content: space-between;
+  padding: 11px 16px;
+  font-size: 13px;
+  color: #007aff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+}
+.airdrop-mini-bottom span:last-child{ font-weight: 600; }
+
+/* centered greeting */
+.flatlay-greeting{
+  position: absolute;
+  top: 44%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: min(560px, 84vw);
+  z-index: 5;
+}
+.flatlay-greeting .hand-greeting{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.hand-lead{
+  font-family: var(--font-hand);
+  font-size: clamp(38px, 6vw, 56px);
+  color: var(--stamp-green);
+  transition: color .2s ease;
+}
+.flatlay-greeting a.hand-greeting:hover .hand-lead{ color: var(--stamp-red); }
+
+.bead-name{ display: inline-flex; align-items: center; gap: 5px; }
+.bead{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid rgba(0,0,0,0.14);
+  box-shadow: 0 5px 10px rgba(0,0,0,0.18), inset 0 -3px 4px rgba(0,0,0,0.05);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--ink);
+  transform: rotate(var(--r, 0deg));
+  transition: transform .2s ease;
+  animation: bead-roll-in .8s cubic-bezier(.3,.9,.35,1) backwards;
+}
+.bead-name .bead:nth-child(1){ animation-delay: .1s; }
+.bead-name .bead:nth-child(2){ animation-delay: .24s; }
+.bead-name .bead:nth-child(3){ animation-delay: .38s; }
+.bead-name .bead:nth-child(4){ animation-delay: .52s; }
+.bead-name .bead:nth-child(5){ animation-delay: .66s; }
+.bead-name .bead:nth-child(6){ animation-delay: .80s; }
+@keyframes bead-roll-in{
+  from{ transform: translateX(-160px) rotate(-900deg); opacity: 0; }
+  to{ transform: translateX(0) rotate(var(--r, 0deg)); opacity: 1; }
+}
+.hand-greeting:hover .bead{ transform: rotate(var(--r, 0deg)) translateY(-2px); }
+.bead-charm{ font-size: 20px; color: var(--stamp-red); }
+
+.flatlay-greeting .hand-hint{
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+
+/* ambient float — always on, no entrance choreography */
+@keyframes item-float{
+  0%, 100%{ transform: translateY(0) rotate(var(--rot, 0deg)); }
+  50%{ transform: translateY(-10px) rotate(var(--rot, 0deg)); }
+}
+@media (prefers-reduced-motion: reduce){
+  .flatlay-item{ animation: none; }
+  .bead{ animation: none; }
+}
+
+/* ---------------- MOBILE: collapse to simple stack ---------------- */
+@media (max-width: 860px){
+  .flatlay-canvas{ min-height: 0; }
+  .flatlay-greeting{
+    position: static;
+    transform: none;
+    width: 100%;
+    margin-bottom: 40px;
+  }
+  .flatlay-item{
+    position: static;
+    width: 240px;
+    margin: 0 auto 34px;
+    animation: none !important;
+    transform: none !important;
+  }
+}
