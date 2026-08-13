@@ -80,12 +80,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // AirDrop sound on the home page's AirDrop object
-  document.querySelectorAll('.obj-airdrop').forEach(el => {
-    el.addEventListener('click', () => {
+  // AirDrop card: both buttons play the chime and head to the about page —
+  // Decline just gets a playful beat first since it can't actually decline this one
+  document.querySelectorAll('.obj-airdrop').forEach(card => {
+    const acceptBtn = card.querySelector('.airdrop-accept');
+    const declineBtn = card.querySelector('.airdrop-decline');
+    if (!acceptBtn || !declineBtn) return;
+
+    const goToAbout = (delay) => {
       const audio = new Audio('assets/sounds/airdrop.mp3');
       audio.volume = 0.6;
       audio.play().catch(() => {});
+      setTimeout(() => { window.location.href = 'life.html'; }, delay);
+    };
+
+    acceptBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      goToAbout(450);
+    });
+
+    declineBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      declineBtn.disabled = true;
+      declineBtn.textContent = 'nice try 😌';
+      goToAbout(700);
     });
   });
 

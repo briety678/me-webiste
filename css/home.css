@@ -201,7 +201,18 @@
   color: #007aff;
   font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
 }
-.airdrop-mini-bottom span:last-child{ font-weight: 600; }
+.airdrop-mini-bottom button{
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  transition: transform .15s ease;
+}
+.airdrop-mini-bottom button:active{ transform: scale(0.94); }
+.airdrop-mini-bottom .airdrop-accept{ font-weight: 600; }
 
 /* centered greeting */
 .flatlay-greeting{
