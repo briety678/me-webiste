@@ -108,8 +108,11 @@ document.addEventListener('DOMContentLoaded', () => {
           io.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.2 });
+    }, { threshold: 0, rootMargin: '0px 0px -10% 0px' });
     revealables.forEach(el => io.observe(el));
+    // safety net: content must never stay permanently invisible if the
+    // observer misses a very tall section or doesn't fire for any reason
+    setTimeout(() => revealables.forEach(el => el.classList.add('is-visible')), 2500);
   } else {
     revealables.forEach(el => el.classList.add('is-visible'));
   }
