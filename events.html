@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Events — Bria Han</title>
 <meta name="description" content="Field marketing, conferences, and community events — mapped by city.">
-<link rel="stylesheet" href="css/style.css?v=1788288239">
-<link rel="stylesheet" href="css/events.css?v=1788288239">
+<link rel="stylesheet" href="css/style.css?v=1788313641">
+<link rel="stylesheet" href="css/events.css?v=1788313641">
 </head>
 <body>
 
@@ -31,10 +31,17 @@
         <p>I do all different kinds of events — conferences, side events, launch parties,
            happy hours, cowork hackathons, community meetups, even a winter retreat.
            I'm an event curator and an on-the-ground executor, not just a planner. Every
-           cover below is the real thing — click one to go straight to it.</p>
+           cover below is the real thing — spin the ring, or click a card to go straight to it.</p>
       </div>
 
-      <div class="events-grid" id="eventsGrid" data-reveal></div>
+      <div class="round-carousel-wrap" data-reveal>
+        <div class="round-carousel" id="roundCarousel">
+          <div class="rc-stage">
+            <div class="rc-ring" id="rcRing"></div>
+          </div>
+        </div>
+        <div class="rc-caption" id="rcCaption"></div>
+      </div>
     </div>
   </section>
 </main>
@@ -51,7 +58,7 @@
   </div>
 </footer>
 
-<script src="js/main.js?v=1788288239"></script>
-<script src="js/events.js?v=1788288239"></script>
+<script src="js/main.js?v=1788313641"></script>
+<script src="js/events.js?v=1788313641"></script>
 </body>
 </html>

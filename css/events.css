@@ -5,46 +5,50 @@
 .events-header h1{ font-size: clamp(28px, 4.4vw, 44px); }
 .events-header p{ max-width: 640px; margin: 14px auto 0; color: var(--ink-soft); font-size: 16px; line-height:1.7; }
 
-/* ---------- masonry pinboard of real event covers ---------- */
-.events-grid{
-  columns: 3 260px;
-  column-gap: 22px;
-}
-@media (max-width: 640px){
-  .events-grid{ columns: 1 260px; }
-}
+/* ---------- 3D rotating ring carousel of real event covers ---------- */
+.round-carousel-wrap{ max-width: 980px; margin: 0 auto; }
 
-.event-tile{
+.round-carousel{
   position: relative;
-  break-inside: avoid;
-  margin-bottom: 26px;
-  background: var(--paper-card);
-  border-radius: 4px;
-  box-shadow: 0 12px 22px rgba(0,0,0,0.14);
-  overflow: hidden;
-  transform: rotate(var(--tilt, 0deg));
-  transition: transform .25s ease, box-shadow .25s ease;
-}
-.event-tile:hover{
-  transform: rotate(0deg) translateY(-4px) scale(1.015);
-  box-shadow: 0 20px 32px rgba(0,0,0,0.2);
-  z-index: 2;
-}
-.event-tile.flash{
-  animation: event-flash 1.8s ease;
-}
-@keyframes event-flash{
-  0%, 100%{ box-shadow: 0 12px 22px rgba(0,0,0,0.14); }
-  20%, 60%{ box-shadow: 0 0 0 4px var(--c), 0 20px 32px rgba(0,0,0,0.22); }
-}
-
-.event-cover{ display: block; line-height: 0; background: var(--c); }
-.event-cover img{ width: 100%; height: auto; display: block; }
-
-.event-info{ padding: 14px 16px 18px; }
-.event-loc{
+  width: 100%;
+  height: 360px;
   display: flex;
   align-items: center;
+  justify-content: center;
+  perspective: 2600px;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.round-carousel.grabbing{ cursor: grabbing; }
+
+.rc-stage{ transform-style: preserve-3d; }
+.rc-ring{ position: relative; transform-style: preserve-3d; }
+
+.rc-item{ position: absolute; inset: 0; transform-style: preserve-3d; }
+.rc-face{
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  backface-visibility: hidden;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.4);
+}
+.rc-face.rc-back{ transform: rotateY(180deg); filter: brightness(.35); }
+.rc-item.flash .rc-face{ box-shadow: 0 0 0 3px var(--c), 0 14px 30px rgba(0,0,0,0.45); }
+
+/* ---------- caption panel: shows whichever card is currently front-facing ---------- */
+.rc-caption{
+  margin-top: 18px;
+  text-align: center;
+  min-height: 92px;
+}
+.rc-caption .event-loc{
+  display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 6px;
   font-family: var(--font-mono);
   font-size: 11px;
@@ -52,46 +56,54 @@
   letter-spacing: .05em;
   color: var(--muted);
 }
-.event-type{
+.rc-caption .event-type{
   display: inline-block;
   margin-top: 6px;
   font-family: var(--font-mono);
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: .05em;
-  color: var(--c);
-  border: 1px solid var(--c);
+  color: var(--c, var(--ink));
+  border: 1px solid var(--c, var(--line));
   border-radius: 20px;
   padding: 2px 9px;
 }
-.event-name{
+.rc-caption .event-name{
   display: block;
   margin-top: 8px;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 15.5px;
+  font-size: 17px;
   line-height: 1.35;
   color: var(--ink);
   transition: color .2s ease;
 }
-.event-name:hover{ color: var(--c); }
-.event-note{
-  margin: 6px 0 0;
+.rc-caption .event-name:hover{ color: var(--c, var(--stamp-red)); }
+.rc-caption .event-note{
+  margin: 6px auto 0;
+  max-width: 480px;
   font-size: 12.5px;
   line-height: 1.5;
   color: var(--ink-soft);
 }
-.event-links{
+.rc-caption .event-links{
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 4px 12px;
   margin-top: 8px;
 }
-.event-links a{
+.rc-caption .event-links a{
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--ink);
   border-bottom: 1px dashed var(--line);
   transition: color .2s ease, border-color .2s ease;
 }
-.event-links a:hover{ color: var(--stamp-red); border-color: var(--stamp-red); }
+.rc-caption .event-links a:hover{ color: var(--stamp-red); border-color: var(--stamp-red); }
+.rc-caption .rc-hint{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: .03em;
+}
