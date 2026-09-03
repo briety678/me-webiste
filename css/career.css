@@ -62,8 +62,48 @@
   perspective: 2000px;
 }
 
+/* the rest of the book — pages you've already read (left) and pages still
+   to come (right), each just barely peeking out from behind the open
+   spread, fanned back into the distance. Click one to jump straight to it. */
+.book-stack{
+  position: absolute;
+  top: 3%;
+  bottom: 3%;
+  width: 70px;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+.book-stack--right{ right: -16px; }
+.book-stack--left{ left: -16px; }
+.book-stack-page{
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-md);
+  background:
+    repeating-linear-gradient(180deg, rgba(0,0,0,0.06) 0 2px, transparent 2px 6px),
+    var(--paper-card);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.16);
+  pointer-events: auto;
+  cursor: pointer;
+  transition: transform .3s ease;
+}
+.book-stack--right .book-stack-page{
+  border-left: 5px solid var(--c, var(--line));
+  transform: translateX(calc(var(--i) * 17px)) translateZ(calc(var(--i) * -30px)) rotateY(-9deg);
+}
+.book-stack--left .book-stack-page{
+  border-right: 5px solid var(--c, var(--line));
+  transform: translateX(calc(var(--i) * -17px)) translateZ(calc(var(--i) * -30px)) rotateY(9deg);
+}
+.book-stack--right .book-stack-page:hover{ transform: translateX(calc(var(--i) * 17px + 6px)) translateZ(calc(var(--i) * -30px)) rotateY(-13deg); }
+.book-stack--left .book-stack-page:hover{ transform: translateX(calc(var(--i) * -17px - 6px)) translateZ(calc(var(--i) * -30px)) rotateY(13deg); }
+@media (max-width: 760px){
+  .book-stack{ display: none; }
+}
+
 .visa-spread,
 .flip-leaf{
+  position: relative;
   display: grid;
   grid-template-columns: 1fr 1.2fr;
   min-height: 420px;
@@ -72,6 +112,16 @@
   border-radius: var(--radius-md);
   box-shadow: 0 30px 60px rgba(0,0,0,0.16);
   overflow: hidden;
+}
+/* the fore-edge — a sliver of many thin bound pages, the detail that
+   sells "this is one page of a whole book," not a single flat card */
+.visa-spread::after{
+  content: '';
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 6px;
+  background: repeating-linear-gradient(180deg, rgba(120,100,70,0.2) 0 1.5px, rgba(250,245,235,0.95) 1.5px 3px);
+  pointer-events: none;
 }
 .visa-spread{
   position: relative; width: 100%; height: 100%;
@@ -86,25 +136,42 @@
   position: absolute;
   inset: 0;
   z-index: 15;
-  transform-origin: left center;
+  /* pivot at the spine (the boundary between the 1fr/1.2fr page columns),
+     not the outer edge — a real page turns from the binding, not the cover edge */
+  transform-origin: 45.45% center;
+  transform-style: preserve-3d;
   backface-visibility: hidden;
   pointer-events: none;
-  will-change: transform, opacity;
+  will-change: transform, box-shadow;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.16);
 }
-.flip-leaf.flip-next{ animation: flipNext .62s cubic-bezier(.45,.05,.35,1) forwards; }
-.flip-leaf.flip-prev{ animation: flipPrev .62s cubic-bezier(.45,.05,.35,1) forwards; }
-@keyframes flipNext{
-  0%{ transform: rotateY(0deg); box-shadow: 0 30px 60px rgba(0,0,0,0.16); }
-  60%{ box-shadow: -20px 20px 50px rgba(0,0,0,0.3); }
-  100%{ transform: rotateY(-178deg); }
+/* a soft shading overlay GSAP fades in/out over the course of the flip —
+   the "light catching the paper as it curls" cue, timed against the actual
+   rotation progress rather than a fixed-duration CSS keyframe. A real
+   element (not ::after) since GSAP can't animate pseudo-elements directly. */
+.flip-leaf-glow{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
 }
-@keyframes flipPrev{
-  0%{ transform: rotateY(0deg); box-shadow: 0 30px 60px rgba(0,0,0,0.16); }
-  60%{ box-shadow: 20px 20px 50px rgba(0,0,0,0.3); }
-  100%{ transform: rotateY(178deg); }
+.flip-leaf-glow--next{
+  background: linear-gradient(90deg, transparent 20%, rgba(0,0,0,0.4) 55%, rgba(255,255,255,0.25) 75%, transparent 100%);
 }
-@media (prefers-reduced-motion: reduce){
-  .flip-leaf.flip-next, .flip-leaf.flip-prev{ animation-duration: .01s; }
+.flip-leaf-glow--prev{
+  background: linear-gradient(270deg, transparent 20%, rgba(0,0,0,0.4) 55%, rgba(255,255,255,0.25) 75%, transparent 100%);
+}
+/* the blank back of the page — pre-rotated 180°, so it only becomes visible
+   once the leaf has turned past vertical, instead of the page just vanishing
+   mid-flip (backface-visibility:hidden on the front content above) */
+.flip-leaf-back{
+  position: absolute;
+  inset: 0;
+  background: var(--paper-card);
+  border-radius: var(--radius-md);
+  box-shadow: inset 0 0 0 1px var(--line);
+  backface-visibility: hidden;
+  transform: rotateY(180deg);
 }
 
 .visa-page{ padding: 32px 30px; }
@@ -125,6 +192,184 @@
 .stamp-logo-pair img{ max-width: 40px; max-height: 30px; object-fit: contain; }
 .visa-page--stamp .visa-dates{ font-family: var(--font-mono); font-size: 13px; color: var(--ink-soft); }
 .visa-page--stamp .visa-company{ font-family: var(--font-display); font-weight:700; font-size: 22px; }
+
+/* ---------- page 1: the passport bio-data spread, pink paper ---------- */
+.visa-spread.is-passport-page,
+.flip-leaf.is-passport-page{
+  background-color: color-mix(in srgb, var(--stampc-pink) 14%, var(--paper-card));
+  /* a real passport's two facing leaves are the same physical size — the
+     1fr/1.2fr split elsewhere is tuned for text-heavy role pages, not this one */
+  grid-template-columns: 1fr 1fr;
+}
+.visa-page--passport-stamps{
+  border-right: 2px dashed var(--line);
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: 18px 22px;
+}
+.visa-page--passport-stamps .stamp{ width: 132px; height: 128px; }
+
+.visa-page--passport-id{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  isolation: isolate;
+}
+/* fine security-print dot pattern — the "this is an official document" cue */
+.visa-page--passport-id::before{
+  content: '';
+  position: absolute;
+  inset: 14px;
+  border: 1px solid color-mix(in srgb, var(--stampc-pink) 45%, var(--ink));
+  outline: 1px solid color-mix(in srgb, var(--stampc-pink) 25%, var(--ink));
+  outline-offset: 4px;
+  background-image: radial-gradient(color-mix(in srgb, var(--stampc-pink) 35%, var(--ink)) .5px, transparent .5px);
+  background-size: 8px 8px;
+  background-position: -4px -4px;
+  opacity: .5;
+  pointer-events: none;
+  z-index: -1;
+}
+/* a laminate sheen sweeping across the page, like light catching plastic */
+.visa-page--passport-id::after{
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,0.55) 50%, transparent 60%);
+  pointer-events: none;
+  z-index: -1;
+}
+.passport-chip{
+  position: absolute;
+  top: 30px; right: 30px;
+  width: 34px; height: 26px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, #ecd394 0%, #c9a45f 100%);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.15);
+}
+.passport-chip::before{
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 2px;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.15) 1px, transparent 1px);
+  background-size: 6px 6px;
+}
+.passport-id-title{
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 26px;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+  border-bottom: 2px solid var(--ink);
+  display: inline-block;
+  padding-bottom: 4px;
+  margin-bottom: 16px;
+}
+.passport-id-head{ display: flex; gap: 16px; align-items: flex-start; margin-bottom: 12px; }
+.passport-id-head .passport-field{ flex: 1; margin-bottom: 0; align-self: flex-end; }
+.passport-id-photo{
+  flex: none;
+  width: 100px; height: 120px;
+  border-radius: 4px;
+  border: 2px solid var(--ink);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.18);
+  overflow: hidden;
+}
+.passport-id-photo img{ width: 100%; height: 100%; object-fit: cover; }
+.passport-mrz{
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px dashed color-mix(in srgb, var(--stampc-pink) 40%, var(--ink));
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .1em;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  word-break: break-all;
+}
+.passport-field{ margin-bottom: 12px; }
+.passport-field .label{ margin-bottom: 4px; }
+.passport-box{
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 7px 10px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ink);
+}
+.passport-field-row{ display: flex; gap: 12px; }
+.passport-field-row .passport-field{ flex: 1; margin-bottom: 12px; }
+.passport-box--edu{ padding: 8px 10px; }
+.edu-logos{ display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; align-items: center; }
+.edu-logo-item{
+  position: relative;
+  height: 40px;
+  border-radius: 6px;
+  background: #fff;
+  border: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  padding: 6px 12px;
+  cursor: default;
+}
+.edu-logo-item img{ height: 100%; width: auto; max-width: 140px; object-fit: contain; display: block; }
+.edu-text-logo{
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
+.edu-degree{
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease, transform .2s ease;
+  z-index: 5;
+}
+.edu-logo-item:hover .edu-degree{
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.passport-signature-row{
+  margin-top: 18px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+.passport-property{
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+.passport-property strong{ color: var(--ink); font-family: var(--font-display); }
+.passport-signature{
+  font-family: var(--font-hand);
+  font-size: 26px;
+  color: var(--ink);
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 2px;
+}
+@media (max-width: 760px){
+  .visa-page--passport-stamps{ border-right: none; border-bottom: 2px dashed var(--line); }
+}
 
 .visa-page--detail .label{ margin-bottom: 4px; }
 .visa-page--detail .visa-role{ font-size: 20px; font-family: var(--font-display); font-weight: 600; margin-bottom: 4px; }

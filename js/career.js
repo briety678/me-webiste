@@ -1,5 +1,11 @@
 const ROLES = [
   {
+    isPassportBio: true,
+    company: 'Passport',
+    role: 'Passport',
+    color: 'var(--stampc-pink)'
+  },
+  {
     company: 'Interface (YC S25)',
     logo: 'assets/logos/interface.png',
     color: 'var(--stampc-blue)',
@@ -180,6 +186,79 @@ function renderTOC(){
 }
 
 function spreadHTML(r){
+  if (r.isPassportBio){
+    return `
+      <div class="visa-page visa-page--passport-stamps">
+        <div class="stamp stamp--circle rot-1" style="--c:var(--stampc-blue)" data-detail="born here — the thread that runs through everything i care about, especially education">
+          <img class="stamp-icon-img" src="assets/mahjong-icon.jpg" alt="">
+          <div class="stamp-title">CHINA</div>
+          <div class="stamp-sub">BORN</div>
+        </div>
+        <div class="stamp stamp--hex rot-3" style="--c:var(--stampc-red)" data-detail="part of my education happened here, between the UK and the US">
+          <img class="stamp-icon-img" src="assets/london-icon.jpg" alt="">
+          <div class="stamp-title">UK</div>
+        </div>
+        <div class="stamp stamp--tri rot-2" style="--c:var(--stampc-green)" data-detail="Ed.M at Harvard — and where my first venture, an education startup, got its start">
+          <img class="stamp-icon-img" src="assets/boston-icon.jpg" alt="">
+          <div class="stamp-title">CAMBRIDGE, US</div>
+          <div class="stamp-sub">HARVARD ED.M</div>
+        </div>
+        <div class="stamp stamp--rect rot-5" style="--c:var(--stampc-mustard)" data-detail="based here since diving deep into tech startups">
+          <img class="stamp-icon-img" src="assets/nyc-icon.jpg" alt="">
+          <div class="stamp-title">NEW YORK, NY</div>
+          <div class="stamp-sub">BASED HERE NOW</div>
+        </div>
+        <div class="stamp stamp--circle rot-4" style="--c:var(--stampc-blue)" data-detail="the language i grew up thinking in">
+          <div class="stamp-icon">文</div>
+          <div class="stamp-title">MANDARIN</div>
+          <div class="stamp-sub">NATIVE</div>
+        </div>
+        <div class="stamp stamp--hex rot-1" style="--c:var(--stampc-green)" data-detail="still practicing — send me your favorite k-dramas">
+          <div class="stamp-icon">한</div>
+          <div class="stamp-title">KOREAN</div>
+          <div class="stamp-sub">LEARNING</div>
+        </div>
+      </div>
+      <div class="visa-page visa-page--passport-id">
+        <div class="passport-chip" aria-hidden="true"></div>
+        <div class="passport-id-title">Passport</div>
+        <div class="passport-id-head">
+          <div class="passport-id-photo"><img src="assets/life/photo-professional.jpg" alt="Bria Han"></div>
+          <div class="passport-field">
+            <div class="label">name</div>
+            <div class="passport-box">Bria Han</div>
+          </div>
+        </div>
+        <div class="passport-field-row">
+          <div class="passport-field">
+            <div class="label">based in</div>
+            <div class="passport-box">New York, NY</div>
+          </div>
+          <div class="passport-field">
+            <div class="label">experience</div>
+            <div class="passport-box">4+ yrs · since 2021</div>
+          </div>
+        </div>
+        <div class="passport-field">
+          <div class="label">education</div>
+          <div class="passport-box passport-box--edu">
+            <div class="edu-logos">
+              <div class="edu-logo-item"><img src="assets/logos/harvard-word.png" alt="Harvard University"></div>
+              <div class="edu-logo-item"><img src="assets/logos/surrey-word.png" alt="University of Surrey"></div>
+            </div>
+          </div>
+        </div>
+        <div class="passport-signature-row">
+          <div class="passport-property">property of<br><strong>bria.han</strong></div>
+          <div class="passport-signature">Bria Han</div>
+        </div>
+        <div class="passport-mrz">
+          P&lt;USA&lt;HAN&lt;&lt;BRIA&lt;&lt;&lt;BASED&lt;IN&lt;NEW&lt;YORK&lt;NY&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br>
+          GROWTH&lt;MARKETER&lt;&lt;4&lt;YRS&lt;EXPERIENCE&lt;&lt;SINCE&lt;2021&lt;&lt;&lt;&lt;&lt;
+        </div>
+      </div>
+    `;
+  }
   if (r.isSkills){
     return `
       <div class="visa-page visa-page--stamp">
@@ -242,10 +321,61 @@ function spreadHTML(r){
   `;
 }
 
+// passport stamps — click to "press" the stamp and reveal a detail.
+// re-wired every render since the stamps are fresh DOM nodes each time
+// (same behavior that used to live on the about-me page's passport).
+let activeTip = null;
+let activeStamp = null;
+function closeStampTip(){
+  if (!activeTip) return;
+  const tip = activeTip;
+  if (window.gsap) gsap.to(tip, { scale: 0.85, autoAlpha: 0, duration: 0.18, ease: 'power1.in', onComplete: () => tip.remove() });
+  else tip.remove();
+  activeTip = null;
+  activeStamp = null;
+}
+function wireStampDetails(root){
+  const stamps = root.querySelectorAll('.stamp[data-detail]');
+  if (!stamps.length || !window.gsap) return;
+  stamps.forEach(stamp => {
+    stamp.addEventListener('click', (e) => {
+      e.stopPropagation();
+      gsap.timeline()
+        .to(stamp, { scale: 0.85, duration: 0.08, ease: 'power2.out' })
+        .to(stamp, { scale: 1, duration: 0.5, ease: 'elastic.out(1, 0.45)' });
+
+      const reopening = activeStamp === stamp;
+      closeStampTip();
+      if (reopening) return;
+
+      const tip = document.createElement('div');
+      tip.className = 'stamp-tip';
+      tip.textContent = stamp.dataset.detail;
+      document.body.appendChild(tip);
+
+      const r = stamp.getBoundingClientRect();
+      tip.style.left = (r.left + r.width / 2 + window.scrollX) + 'px';
+      tip.style.top = (r.top + window.scrollY - 12) + 'px';
+
+      gsap.fromTo(tip,
+        { scale: 0.7, autoAlpha: 0, y: 8 },
+        { scale: 1, autoAlpha: 1, y: 0, duration: 0.4, ease: 'back.out(1.8)' }
+      );
+
+      activeTip = tip;
+      activeStamp = stamp;
+    });
+  });
+}
+document.addEventListener('click', closeStampTip);
+window.addEventListener('scroll', closeStampTip, { passive: true });
+
 function renderSpread(){
   const r = ROLES[current];
   caseOpen = false;
   spreadEl.innerHTML = spreadHTML(r);
+  spreadEl.classList.toggle('is-passport-page', !!r.isPassportBio);
+  wireStampDetails(spreadEl);
 
   const toggle = document.getElementById('caseToggle');
   if (toggle){
@@ -260,30 +390,95 @@ function renderSpread(){
   prevBtn.disabled = current === 0;
   nextBtn.disabled = current === ROLES.length - 1;
   renderTOC();
+  renderStack();
+}
+
+// the rest of the book, peeking from behind the open spread — pages
+// already read on the left, pages still ahead on the right. Click one
+// to jump straight to it, like fanning through a physical book.
+const stackLeftEl = document.getElementById('bookStackLeft');
+const stackRightEl = document.getElementById('bookStackRight');
+const MAX_PEEK = 4;
+function renderStack(){
+  if (!stackLeftEl || !stackRightEl) return;
+
+  const ahead = ROLES.slice(current + 1, current + 1 + MAX_PEEK);
+  const behind = ROLES.slice(Math.max(0, current - MAX_PEEK), current).reverse();
+
+  stackRightEl.innerHTML = ahead.map((r, i) => `
+    <div class="book-stack-page" data-i="${current + 1 + i}" style="--i:${i}; --c:${r.color || 'var(--line)'}"></div>
+  `).join('');
+  stackLeftEl.innerHTML = behind.map((r, i) => `
+    <div class="book-stack-page" data-i="${current - 1 - i}" style="--i:${i}; --c:${r.color || 'var(--line)'}"></div>
+  `).join('');
+
+  stackRightEl.querySelectorAll('.book-stack-page').forEach(el => {
+    el.addEventListener('click', () => goTo(Number(el.dataset.i), 'next'));
+  });
+  stackLeftEl.querySelectorAll('.book-stack-page').forEach(el => {
+    el.addEventListener('click', () => goTo(Number(el.dataset.i), 'prev'));
+  });
 }
 
 function goTo(index, direction){
   if (animating || index < 0 || index >= ROLES.length || index === current) return;
   const dir = direction || (index > current ? 'next' : 'prev');
+  const sign = dir === 'next' ? -1 : 1; // which way the page rotates
   animating = true;
 
   // clone the current page as a "leaf" that physically flips away
   const leaf = document.createElement('div');
   leaf.className = 'flip-leaf visa-spread passport-paper';
+  if (spreadEl.classList.contains('is-passport-page')) leaf.classList.add('is-passport-page');
   leaf.innerHTML = spreadEl.innerHTML;
+  const leafBack = document.createElement('div');
+  leafBack.className = 'flip-leaf-back';
+  leaf.appendChild(leafBack);
+  const leafGlow = document.createElement('div');
+  leafGlow.className = 'flip-leaf-glow ' + (dir === 'next' ? 'flip-leaf-glow--next' : 'flip-leaf-glow--prev');
+  leaf.appendChild(leafGlow);
   stageEl.appendChild(leaf);
 
   // swap the real content underneath immediately (revealed as the leaf turns)
   current = index;
   renderSpread();
 
-  requestAnimationFrame(() => {
-    leaf.classList.add(dir === 'next' ? 'flip-next' : 'flip-prev');
-  });
-  leaf.addEventListener('animationend', () => {
-    leaf.remove();
-    animating = false;
-  }, { once: true });
+  const done = () => { leaf.remove(); animating = false; };
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!window.gsap || reduceMotion){
+    done();
+    return;
+  }
+
+  // a GSAP timeline driving the actual 3D rotation, instead of a CSS
+  // @keyframes triggered through a raw requestAnimationFrame — same visual
+  // idea (turn on the spine, shadow builds then eases off, a soft light
+  // sweeps across it) but timed against real animation progress, plus a
+  // faint bow (skewY) that peaks mid-turn since a real page isn't rigid
+  gsap.timeline({ onComplete: done })
+    .set(leaf, { transformPerspective: 2000, force3D: true })
+    .to(leaf, {
+      rotationY: sign * 178,
+      duration: 0.62,
+      ease: 'power2.inOut',
+      onUpdate(){
+        const wobble = Math.sin(this.progress() * Math.PI) * 2.2;
+        gsap.set(leaf, { skewY: sign * -wobble });
+      }
+    }, 0)
+    .to(leaf, {
+      boxShadow: `${sign < 0 ? '-20px' : '20px'} 20px 50px rgba(0,0,0,0.3)`,
+      duration: 0.28,
+      ease: 'power1.in'
+    }, 0)
+    .to(leaf, {
+      boxShadow: '0 30px 60px rgba(0,0,0,0.16)',
+      duration: 0.34,
+      ease: 'power1.out'
+    }, 0.28)
+    .to(leafGlow, { opacity: 1, duration: 0.28, ease: 'power1.in' }, 0)
+    .to(leafGlow, { opacity: 0, duration: 0.34, ease: 'power1.out' }, 0.28);
 }
 
 prevBtn.addEventListener('click', () => goTo(current - 1, 'prev'));
