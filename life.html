@@ -5,12 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>About Me — Bria Han</title>
 <meta name="description" content="Outside the resume: places I've lived, languages I speak, and what I do for fun.">
-<link rel="stylesheet" href="css/style.css?v=1788288239">
-<link rel="stylesheet" href="css/life.css?v=1788288239">
+<link rel="stylesheet" href="css/style.css?v=1788313641">
+<link rel="stylesheet" href="css/life.css?v=1788405531">
 </head>
 <body>
 
 <nav class="site-nav">
+<div class="nav-inner">
   <a href="index.html" class="logo">bria<span>.han</span></a>
   <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰ menu</button>
   <ul class="nav-links">
@@ -20,6 +21,7 @@
     <li><a href="events.html">events</a></li>
     <li><a href="projects.html">projects</a></li>
   </ul>
+</div>
 </nav>
 
 <main>
@@ -28,64 +30,6 @@
       <div class="about-hero" data-reveal>
         <h1>Hi, my name is Bria.</h1>
         <span class="hand">pronounced BREE-ah, born in China, raised across a few more places</span>
-      </div>
-
-      <div class="about-spread passport-paper" data-reveal>
-        <div class="about-page about-page--stamps">
-          <div class="stamp stamp--circle rot-1" style="--c:var(--stampc-blue)">
-            <img class="stamp-icon-img" src="assets/mahjong-icon.jpg" alt="">
-            <div class="stamp-title">CHINA</div>
-            <div class="stamp-sub">BORN</div>
-          </div>
-          <div class="stamp stamp--hex rot-3" style="--c:var(--stampc-red)">
-            <img class="stamp-icon-img" src="assets/london-icon.jpg" alt="">
-            <div class="stamp-title">UK</div>
-          </div>
-          <div class="stamp stamp--tri rot-2" style="--c:var(--stampc-green)">
-            <img class="stamp-icon-img" src="assets/boston-icon.jpg" alt="">
-            <div class="stamp-title">CAMBRIDGE, US</div>
-            <div class="stamp-sub">HARVARD ED.M</div>
-          </div>
-          <div class="stamp stamp--rect rot-5" style="--c:var(--stampc-mustard)">
-            <img class="stamp-icon-img" src="assets/nyc-icon.jpg" alt="">
-            <div class="stamp-title">NEW YORK, NY</div>
-            <div class="stamp-sub">BASED HERE NOW</div>
-          </div>
-          <div class="stamp stamp--circle rot-4" style="--c:var(--stampc-blue)">
-            <div class="stamp-icon">文</div>
-            <div class="stamp-title">MANDARIN</div>
-            <div class="stamp-sub">NATIVE</div>
-          </div>
-          <div class="stamp stamp--hex rot-1" style="--c:var(--stampc-green)">
-            <div class="stamp-icon">한</div>
-            <div class="stamp-title">KOREAN</div>
-            <div class="stamp-sub">LEARNING</div>
-          </div>
-        </div>
-        <div class="about-page about-page--id">
-          <div class="about-id-photo"><img src="assets/life/photo-professional.jpg" alt="Bria Han"></div>
-          <div class="about-id-block">
-            <div class="about-id-name">Bria Han</div>
-            <div class="label" style="margin-top:2px;">PASSPORT</div>
-            <div class="label">based in</div>
-            <div class="val">New York, NY</div>
-            <div class="label">industry experience</div>
-            <div class="val">4+ yrs · since 2021</div>
-            <div class="label">education</div>
-            <div class="edu-logos">
-              <div class="edu-logo-item">
-                <img src="assets/logos/harvard-word.png" alt="Harvard University">
-              </div>
-              <div class="edu-logo-item">
-                <img src="assets/logos/surrey-word.png" alt="University of Surrey">
-              </div>
-            </div>
-          </div>
-          <div class="about-mrz">
-            P&lt;USA&lt;HAN&lt;&lt;BRIA&lt;&lt;&lt;BORN&lt;IN&lt;CHINA&lt;RAISED&lt;IN&lt;UK&lt;&lt;&lt;&lt;<br>
-            GROWTH&lt;MARKETER&lt;&lt;BASED&lt;IN&lt;NEW&lt;YORK&lt;NY&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;
-          </div>
-        </div>
       </div>
 
       <div class="about-story-wrap" data-reveal>
@@ -106,7 +50,16 @@
           <div class="polaroid-caption">click to see bria's nyc food recs</div>
         </div>
 
-        <div class="about-story">
+        <div class="letter-wrap" id="letterWrap">
+          <span class="letter-tape letter-tape--l" aria-hidden="true"></span>
+          <span class="letter-tape letter-tape--r" aria-hidden="true"></span>
+          <div class="letter-page">
+            <span class="letter-curl" aria-hidden="true"></span>
+            <span class="letter-doodle letter-doodle--star">★</span>
+            <span class="letter-doodle letter-doodle--heart">♥</span>
+            <span class="letter-doodle letter-doodle--flower">✿</span>
+            <span class="letter-doodle letter-doodle--sparkle">✦</span>
+            <div class="about-story">
           <p class="story-lead">also known as the mysterious gorg girl in tech, if you found me on <a href="https://x.com/briwhoze" target="_blank" rel="noopener">X</a>. welcome to my little corner of the internet 👋</p>
 
           <p>i built this because i wanted a space that actually felt like me: not a LinkedIn profile, not a resume with a nice font, not curated for the algorithm. just me, figuring things out in public. fair warning: it's still evolving. it might turn into part portfolio, part travel diary, part creative dumping ground, and part love letter to the things and people i care about. i contain multitudes.</p>
@@ -128,6 +81,8 @@
           <p>if something here resonates (a collaboration idea, a book recommendation, a restaurant i should try in your city, an event collab idea, or even a new job opportunity) please reach out. my DMs are open. thanks for reading through my thoughts :)</p>
 
           <p class="story-signoff">with love,<br>bria 🌱</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -172,7 +127,7 @@
   </div>
 </footer>
 
-<script src="js/main.js?v=1788288239"></script>
-<script src="js/life.js?v=1788288239"></script>
+<script src="js/main.js?v=1788313641"></script>
+<script src="js/life.js?v=1788404999"></script>
 </body>
 </html>

@@ -11,125 +11,136 @@
   margin-top: 10px;
 }
 
-.about-spread{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border-radius: var(--radius-md);
-  box-shadow: 0 30px 60px rgba(0,0,0,0.16), 0 2px 0 rgba(0,0,0,0.08);
-  overflow: hidden;
-  transform: rotate(-1deg);
-  margin-bottom: 40px;
-}
-.about-page{ padding: 34px 30px; position: relative; }
-.about-page--stamps{
-  border-right: 2px dashed var(--line);
-  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
-  gap: 18px 22px;
-  min-height: 300px;
-}
-.about-page--stamps .stamp{ width: 132px; height: 128px; }
-
-.about-id-photo{
-  width: 118px; height: 140px;
-  border-radius: 4px;
-  background: var(--paper-dark);
-  border: 2px solid var(--ink);
-  display:flex; align-items:center; justify-content:center;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--muted);
-  text-align:center;
-  float: left;
-  margin: 0 18px 12px 0;
-  overflow: hidden;
-}
-.about-id-photo img{ width:100%; height:100%; object-fit: cover; }
-
-.about-id-block .label{ margin-top: 12px; }
-.edu-logos{ display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; align-items: center; }
-.edu-logo-item{
-  position: relative;
-  height: 40px;
-  border-radius: 6px;
-  background: #fff;
-  border: 1px solid var(--line);
-  display: flex; align-items: center; justify-content: center;
-  padding: 6px 12px;
-  cursor: default;
-}
-.edu-logo-item img{ height: 100%; width: auto; max-width: 140px; object-fit: contain; display: block; }
-.edu-text-logo{
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 14px;
-  letter-spacing: .02em;
-  white-space: nowrap;
-}
-.edu-degree{
-  position: absolute;
-  bottom: 120%;
-  left: 50%;
-  transform: translateX(-50%) translateY(4px);
-  background: var(--ink);
-  color: var(--paper);
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  padding: 6px 10px;
-  border-radius: 6px;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .2s ease, transform .2s ease;
-  z-index: 5;
-}
-.edu-logo-item:hover .edu-degree{
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-.about-id-block .val{ font-family: var(--font-mono); font-size: 14px; margin-bottom: 2px; }
-.about-id-name{
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 22px;
-}
-
-.about-mrz{
-  clear: both;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: .06em;
-  color: var(--muted);
-  margin-top: 20px;
-  line-height: 1.6;
-  word-break: break-all;
-}
-
-@media (max-width: 760px){
-  .about-spread{ grid-template-columns: 1fr; transform: none; }
-  .about-page--stamps{ border-right: none; border-bottom: 2px dashed var(--line); }
-}
-
 /* ---------- about photos: draggable colorful polaroids floating beside the bio ---------- */
 .about-story-wrap{
   position: relative;
   margin-bottom: 48px;
 }
+/* ---------- the story, as a real sheet of letter paper on a desk ----------
+   No envelope, no UI-card affectation — just a physical piece of paper:
+   warm off-white stock, fine grain, uneven tone, torn-soft edges, and a
+   shadow that actually sells it's resting on a surface, not floating. */
+.letter-wrap{
+  position: relative;
+  max-width: 720px;
+  margin: 0 auto 20px;
+  perspective: 1600px; /* so the mouse-tilt below reads as a tiny 3D nudge */
+}
+.letter-page{
+  --letter-ink: #4a3340;
+  --letter-ink-soft: #6b4f5a;
+  position: relative;
+  z-index: 1;
+  background-color: #fbedf0;
+  background-image:
+    repeating-linear-gradient(to bottom, transparent, transparent 27px, rgba(214,120,150,0.18) 28px),
+    radial-gradient(ellipse 70% 55% at 26% 16%, rgba(255,250,251,0.7), transparent 62%),
+    radial-gradient(ellipse 60% 50% at 82% 90%, rgba(232,190,203,0.35), transparent 65%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+  background-repeat: repeat, no-repeat, no-repeat, repeat;
+  background-size: auto, auto, auto, 160px 160px;
+  /* a barely-imperfect silhouette, not a perfect CSS rectangle */
+  clip-path: polygon(
+    0.5% 0.2%, 12% 0%, 25% 0.5%, 40% 0%, 55% 0.4%, 70% 0%, 85% 0.5%, 99% 0%, 100% 0.6%,
+    99.6% 15%, 100% 30%, 99.7% 45%, 100% 60%, 99.6% 75%, 100% 90%, 99.5% 100%,
+    85% 99.4%, 70% 100%, 55% 99.3%, 40% 100%, 25% 99.5%, 10% 100%, 0.4% 99.5%,
+    0% 85%, 0.4% 70%, 0% 55%, 0.3% 40%, 0% 25%, 0.4% 10%, 0% 0.2%
+  );
+  padding: 58px 60px 52px 72px;
+  box-shadow:
+    0 1px 1px rgba(60,45,25,0.28),
+    0 10px 20px rgba(60,45,25,0.14),
+    0 34px 60px rgba(40,30,15,0.20),
+    inset 0 0 26px rgba(90,70,40,0.05);
+  transform: rotate(1.2deg) rotateX(var(--letter-tilt-y, 0deg)) rotateY(var(--letter-tilt-x, 0deg));
+  transition: transform .5s cubic-bezier(.2,.7,.25,1);
+}
+/* the margin rule down the left side, like real notebook paper */
+.letter-page::before{
+  content: '';
+  position: absolute;
+  left: 46px; top: 4%; bottom: 4%;
+  width: 1px;
+  background: rgba(214,90,130,0.4);
+}
+/* ring-binder punch holes running the length of the page, each with a
+   hint of an inner rim so they read as cut, not painted on */
+.letter-page::after{
+  content: '';
+  position: absolute;
+  left: 19px; top: 5%; bottom: 5%;
+  width: 14px;
+  background-image:
+    radial-gradient(circle at 38% 32%, rgba(255,255,255,0.7), transparent 55%),
+    radial-gradient(circle, rgba(0,0,0,0.26) 0, rgba(0,0,0,0.26) 5.5px, rgba(0,0,0,0.07) 6px, transparent 7px);
+  background-size: 100% 68px, 100% 68px;
+  background-repeat: repeat-y, repeat-y;
+}
+/* a whisper of a lifted corner, bottom-right — not a fold, just a shadow
+   telling you the paper isn't perfectly flat against the desk */
+.letter-curl{
+  position: absolute;
+  right: 0; bottom: 0;
+  width: 70px; height: 70px;
+  background: radial-gradient(ellipse at 100% 100%, rgba(50,38,20,0.12), transparent 70%);
+  pointer-events: none;
+}
+.letter-doodle{
+  position: absolute;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--stampc-pink);
+  opacity: .85;
+  z-index: 2;
+}
+.letter-doodle--star{ top: 22px; left: 54px; transform: rotate(-12deg); }
+.letter-doodle--heart{ top: 24px; right: 40px; transform: rotate(10deg); }
+.letter-doodle--flower{ font-size: 17px; bottom: 36px; left: 60px; transform: rotate(-8deg); }
+.letter-doodle--sparkle{ font-size: 15px; top: 96px; right: 44px; transform: rotate(14deg); opacity: .7; }
+
+/* two strips of washi tape holding the letter down, like it was actually
+   stuck to something once — a little imperfection, torn ends and all */
+.letter-tape{
+  position: absolute;
+  width: 76px; height: 26px;
+  z-index: 2;
+  background: repeating-linear-gradient(135deg, rgba(255,255,255,0.35) 0 6px, rgba(255,255,255,0.12) 6px 12px), #f3c8d6;
+  opacity: .8;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  clip-path: polygon(2% 10%, 6% 0, 94% 4%, 98% 14%, 96% 88%, 92% 100%, 4% 96%, 0 84%);
+}
+.letter-tape--l{ top: -12px; left: 64px; transform: rotate(-7deg); }
+.letter-tape--r{ top: -10px; right: 70px; transform: rotate(6deg); background: repeating-linear-gradient(135deg, rgba(255,255,255,0.35) 0 6px, rgba(255,255,255,0.12) 6px 12px), #cfe3d8; }
+
+@media (max-width: 620px){
+  .letter-page{ padding: 46px 26px 40px 46px; }
+  .letter-page::before{ left: 24px; }
+  .letter-page::after{ left: 9px; width: 11px; background-size: 100% 54px, 100% 54px; }
+  .letter-doodle--star{ left: 30px; }
+  .letter-doodle--heart{ right: 20px; }
+  .letter-doodle--flower{ left: 34px; }
+  .letter-tape--l{ left: 30px; }
+  .letter-tape--r{ right: 34px; }
+}
+@media (prefers-reduced-motion: reduce){
+  .letter-page{ transition: none; }
+}
+
 /* ---------- the full personal story ---------- */
 .about-story{
-  max-width: 660px;
-  margin: 0 auto;
   position: relative;
   z-index: 1;
 }
 .about-story p{
   font-size: 16px;
-  line-height: 1.75;
-  color: var(--ink-soft);
+  line-height: 1.8;
+  color: var(--letter-ink-soft, var(--ink-soft));
+  text-shadow: 0 0 0.4px rgba(58,49,40,0.35); /* the faintest ink-on-paper softness */
   margin: 0 0 20px;
 }
 .about-story .story-lead{
   font-size: 19px;
-  color: var(--ink);
+  color: var(--letter-ink, var(--ink));
 }
 .about-story p a{
   color: var(--ink);
