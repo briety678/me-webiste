@@ -1,6 +1,26 @@
 const folderSound = new Audio('assets/sounds/folder-open.mp3');
 folderSound.volume = 0.5;
 
+// a light cursor-follow tilt on each closed folder — same tactile-tilt idea
+// as the career page's passport, just subtler (a card, not a full spread)
+const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (!reduceMotion){
+  document.querySelectorAll('.folder-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      if (card.classList.contains('is-open')) return; // holds still once opened
+      const rect = card.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width;
+      const py = (e.clientY - rect.top) / rect.height;
+      card.style.setProperty('--tilt-x', `${(px - 0.5) * 12}deg`);
+      card.style.setProperty('--tilt-y', `${(0.5 - py) * 8}deg`);
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.setProperty('--tilt-x', '0deg');
+      card.style.setProperty('--tilt-y', '0deg');
+    });
+  });
+}
+
 document.querySelectorAll('.folder-front').forEach(front => {
   front.addEventListener('click', () => {
     const card = front.closest('.project-card');
@@ -10,6 +30,9 @@ document.querySelectorAll('.folder-front').forEach(front => {
     card.classList.toggle('is-open', open);
     btn.textContent = open ? 'hide case study ↑' : 'read full case study →';
     if (open) {
+      // settle flat, whatever angle the mouse tilt left it at
+      card.style.setProperty('--tilt-x', '0deg');
+      card.style.setProperty('--tilt-y', '0deg');
       folderSound.currentTime = 0;
       folderSound.play().catch(() => {});
     }

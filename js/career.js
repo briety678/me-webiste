@@ -240,6 +240,10 @@ function spreadHTML(r){
           </div>
         </div>
         <div class="passport-field">
+          <div class="label">field</div>
+          <div class="passport-box">mysterious gorg girl in tech</div>
+        </div>
+        <div class="passport-field">
           <div class="label">education</div>
           <div class="passport-box passport-box--edu">
             <div class="edu-logos">
@@ -247,6 +251,10 @@ function spreadHTML(r){
               <div class="edu-logo-item"><img src="assets/logos/surrey-word.png" alt="University of Surrey"></div>
             </div>
           </div>
+        </div>
+        <div class="passport-field">
+          <div class="label">fun fact</div>
+          <div class="passport-box passport-box--fun">i'm a fun person and that is a fact :)</div>
         </div>
         <div class="passport-signature-row">
           <div class="passport-property">property of<br><strong>bria.han</strong></div>
@@ -426,11 +434,33 @@ function goTo(index, direction){
   const sign = dir === 'next' ? -1 : 1; // which way the page rotates
   animating = true;
 
-  // clone the current page as a "leaf" that physically flips away
+  // only the right page actually turns — a real book's left page doesn't
+  // fly anywhere when you flip forward, it just sits there while the
+  // right page peels away from the spine. Clone just that half, sized
+  // and positioned to match its real box exactly, so its own left edge
+  // always IS the true spine (no more per-page-type origin math needed).
+  const isPassport = spreadEl.classList.contains('is-passport-page');
+  const oldRightPage = spreadEl.children[1];
+  const stageRect = stageEl.getBoundingClientRect();
+  const rightRect = oldRightPage.getBoundingClientRect();
+
   const leaf = document.createElement('div');
-  leaf.className = 'flip-leaf visa-spread passport-paper';
-  if (spreadEl.classList.contains('is-passport-page')) leaf.classList.add('is-passport-page');
-  leaf.innerHTML = spreadEl.innerHTML;
+  leaf.className = 'flip-leaf passport-paper ' + oldRightPage.className;
+  if (isPassport) leaf.classList.add('is-passport-page');
+  // inline, not just the .flip-leaf class rule — some cloned content
+  // classes (.visa-page--passport-id) set their own `position: relative`
+  // for their own pseudo-elements, and since they're copied onto this
+  // same leaf, a same-specificity class-vs-class tie let that win and
+  // silently drop the leaf into normal document flow (visible as the old
+  // page flashing in below the book for the whole animation). An inline
+  // style always wins, so this can't happen no matter what content class
+  // ends up riding along.
+  leaf.style.position = 'absolute';
+  leaf.style.left = (rightRect.left - stageRect.left) + 'px';
+  leaf.style.top = (rightRect.top - stageRect.top) + 'px';
+  leaf.style.width = rightRect.width + 'px';
+  leaf.style.height = rightRect.height + 'px';
+  leaf.innerHTML = oldRightPage.innerHTML;
   const leafBack = document.createElement('div');
   leafBack.className = 'flip-leaf-back';
   leaf.appendChild(leafBack);
@@ -439,7 +469,9 @@ function goTo(index, direction){
   leaf.appendChild(leafGlow);
   stageEl.appendChild(leaf);
 
-  // swap the real content underneath immediately (revealed as the leaf turns)
+  // swap the real content underneath immediately — the left page updates
+  // in place since it was never part of the animation; the right page is
+  // simply covered by the turning leaf until it clears
   current = index;
   renderSpread();
 
@@ -453,9 +485,10 @@ function goTo(index, direction){
 
   // a GSAP timeline driving the actual 3D rotation, instead of a CSS
   // @keyframes triggered through a raw requestAnimationFrame — same visual
-  // idea (turn on the spine, shadow builds then eases off, a soft light
+  // idea (turn on the spine, shadow builds then eases off, a highlight
   // sweeps across it) but timed against real animation progress, plus a
-  // faint bow (skewY) that peaks mid-turn since a real page isn't rigid
+  // page that visibly isn't rigid: it bows (skewY) and narrows slightly
+  // as it turns edge-on (scaleX), both peaking exactly at the midpoint
   gsap.timeline({ onComplete: done })
     .set(leaf, { transformPerspective: 2000, force3D: true })
     .to(leaf, {
@@ -463,8 +496,11 @@ function goTo(index, direction){
       duration: 0.62,
       ease: 'power2.inOut',
       onUpdate(){
-        const wobble = Math.sin(this.progress() * Math.PI) * 2.2;
-        gsap.set(leaf, { skewY: sign * -wobble });
+        const bow = Math.sin(this.progress() * Math.PI); // 0 → 1 → 0
+        gsap.set(leaf, {
+          skewY: sign * -bow * 2.2,
+          scaleX: 1 - bow * 0.035
+        });
       }
     }, 0)
     .to(leaf, {
@@ -477,8 +513,12 @@ function goTo(index, direction){
       duration: 0.34,
       ease: 'power1.out'
     }, 0.28)
-    .to(leafGlow, { opacity: 1, duration: 0.28, ease: 'power1.in' }, 0)
-    .to(leafGlow, { opacity: 0, duration: 0.34, ease: 'power1.out' }, 0.28);
+    .fromTo(leafGlow,
+      { backgroundPositionX: '120%', opacity: 0 },
+      { backgroundPositionX: '-60%', opacity: 1, duration: 0.34, ease: 'power1.in' },
+      0
+    )
+    .to(leafGlow, { opacity: 0, duration: 0.28, ease: 'power1.out' }, 0.34);
 }
 
 prevBtn.addEventListener('click', () => goTo(current - 1, 'prev'));

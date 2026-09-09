@@ -63,7 +63,45 @@
   transform: rotateX(-14deg) translateY(-10px);
 }
 
+/* a light cursor-follow tilt on the folder itself — JS sets --tilt-x/--tilt-y
+   on mousemove; independent of the open/close lift above so the two never fight */
+.folder-front{
+  transform: rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg));
+  transition: box-shadow .3s ease, transform .35s cubic-bezier(.2,.7,.25,1);
+}
+.folder-card.is-open .folder-front{ transition: box-shadow .3s ease; } /* hold still once open */
+
+/* papers hiding just behind the folder front, peeking up out of the top
+   edge on hover/open — the "something's inside" tease before you click */
+.folder-peek{
+  position: absolute;
+  left: 50%;
+  top: 6px;
+  width: 74%;
+  height: 30px;
+  transform: translateX(-50%);
+  z-index: -1;
+  pointer-events: none;
+}
+.folder-peek span{
+  position: absolute;
+  inset: 0;
+  background: #fffdf9;
+  border-radius: 3px 10px 0 0;
+  box-shadow: 0 -1px 0 rgba(0,0,0,0.05);
+  transform: translateY(16px);
+  transition: transform .45s cubic-bezier(.34,1.56,.64,1);
+}
+.folder-peek span:nth-child(1){ transform: translateY(18px) rotate(-1.5deg); transition-delay: 0s; }
+.folder-peek span:nth-child(2){ transform: translateY(18px) rotate(1deg); transition-delay: .02s; }
+.folder-peek span:nth-child(3){ transform: translateY(18px) rotate(-.5deg); transition-delay: .04s; }
+.folder-card:hover .folder-peek span,
+.folder-card.is-open .folder-peek span{ transform: translateY(-6px) rotate(0deg); }
+.folder-card.is-open .folder-peek span:nth-child(1){ transform: translateY(-9px) rotate(-1deg); }
+.folder-card.is-open .folder-peek span:nth-child(2){ transform: translateY(-7px) rotate(.6deg); }
+
 .folder-tab{
+  position: relative;
   display: block;
   width: fit-content;
   min-width: 128px;
@@ -77,6 +115,14 @@
   color: rgba(255,255,255,.95);
   background: var(--fc, var(--stamp-red));
   border-radius: 10px 10px 0 0;
+  overflow: hidden;
+}
+/* manila-fiber grain, same trick as the front panel below */
+.folder-tab::after{
+  content: '';
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(115deg, rgba(255,255,255,0.12) 0px, rgba(255,255,255,0.12) 1px, transparent 1px, transparent 4px);
+  mix-blend-mode: overlay;
 }
 
 .folder-front{
@@ -86,10 +132,29 @@
   box-shadow: 0 12px 24px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.3);
   padding: 10px;
   cursor: pointer;
+  overflow: hidden;
   transition: box-shadow .3s ease;
 }
 .folder-card:hover .folder-front{ box-shadow: 0 18px 30px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,255,255,0.3); }
 .folder-card.is-open .folder-front{ box-shadow: 0 32px 46px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.3); }
+/* a second, darker folder body peeking out behind the front — the depth
+   cue that reads as "a real folder with some thickness", not a flat card */
+.folder-front::before{
+  content: '';
+  position: absolute;
+  inset: -7px -9px -9px 5px;
+  background: color-mix(in srgb, var(--fc, var(--stamp-red)) 58%, black);
+  border-radius: 3px 16px 16px 16px;
+  z-index: -1;
+}
+/* manila-fiber grain across the front panel itself */
+.folder-front::after{
+  content: '';
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(115deg, rgba(255,255,255,0.10) 0px, rgba(255,255,255,0.10) 1px, transparent 1px, transparent 4px);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
 
 .folder-paper{
   position: relative;
@@ -97,6 +162,7 @@
   border-radius: 2px 14px 14px 14px;
   padding: 22px 24px 20px;
   box-shadow: inset 0 2px 6px rgba(0,0,0,0.06);
+  transform: rotate(-0.6deg);
 }
 
 .proj-top{
@@ -156,16 +222,39 @@
   grid-template-columns: 1fr 1fr;
   gap: 26px 22px;
   opacity: 0;
-  transform: translateY(-10px);
-  transition: opacity .4s ease .1s, transform .4s ease .1s;
+  /* the "document" starts tucked up and slightly tilted, like it's still
+     behind the folder, then eases down flat as it slides fully out */
+  transform: translateY(-16px) rotateX(-8deg);
+  transform-origin: 50% 0;
+  transition: opacity .4s ease .1s, transform .45s cubic-bezier(.22,.75,.25,1) .1s;
 }
 @media (max-width: 620px){
   .project-case-inner{ grid-template-columns: 1fr; }
 }
 .project-case.open .project-case-inner{
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) rotateX(0deg);
 }
+
+/* small classified-style stamp heading the pulled-out case file */
+.case-stamp{
+  grid-column: 1 / -1;
+  display: inline-flex;
+  align-self: start;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  margin-bottom: 2px;
+  padding: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--fc, var(--stamp-red));
+  border: 1px dashed var(--fc, var(--stamp-red));
+  border-radius: 3px;
+}
+.case-stamp::before{ content: '✦'; font-size: 9px; }
 
 /* ---------- sticky-note style case-study blocks ---------- */
 .pc-block{
@@ -246,6 +335,10 @@
   font-size: 12.5px;
   color: var(--stamp-red);
   border-bottom: 1px solid var(--stamp-red);
+}
+
+@media (prefers-reduced-motion: reduce){
+  .folder-front, .folder-peek span, .project-case-inner{ transition: none !important; }
 }
 
 .more-work{ margin-top: 90px; }

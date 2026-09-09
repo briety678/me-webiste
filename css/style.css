@@ -54,7 +54,7 @@ a{ color: inherit; text-decoration: none; }
 button{ font-family: inherit; cursor: pointer; }
 
 .wrap{
-  max-width: 1180px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 0 32px;
 }
@@ -76,13 +76,20 @@ h1, h2, h3{ font-family: var(--font-display); margin: 0; }
   position: sticky;
   top: 0;
   z-index: 50;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px dashed var(--line);
+}
+/* bar itself stays full-bleed; its content lines up with the same
+   centered column as everything else so the nav doesn't read as wider
+   than the page beneath it */
+.nav-inner{
+  max-width: 1000px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 18px 32px;
-  background: rgba(255,255,255,0.88);
-  backdrop-filter: blur(6px);
-  border-bottom: 1px dashed var(--line);
 }
 .site-nav .logo{
   font-family: var(--font-display);
@@ -153,8 +160,35 @@ h1, h2, h3{ font-family: var(--font-display); margin: 0; }
   background: transparent;
   transition: transform .25s ease, opacity .25s ease;
   user-select: none;
+  cursor: pointer;
 }
 .stamp:hover{ transform: rotate(0deg) scale(1.05); opacity: 1; }
+
+.stamp-tip{
+  position: absolute;
+  transform: translate(-50%, -100%);
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.45;
+  padding: 9px 13px;
+  border-radius: 8px;
+  max-width: 220px;
+  text-align: center;
+  z-index: 60;
+  pointer-events: none;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.28);
+}
+.stamp-tip::after{
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--ink);
+}
 .stamp .stamp-title{ font-family: var(--font-mono); font-weight:700; font-size: 12px; line-height:1.25; word-break: break-word; max-width: 92%; }
 .stamp .stamp-sub{ font-family: var(--font-mono); font-size: 10px; margin-top:2px; letter-spacing:.04em; }
 .stamp .stamp-icon{ font-size: 20px; margin-bottom: 4px; }
@@ -254,7 +288,7 @@ section{ padding: 90px 0; }
   justify-content: space-between;
   gap: 18px;
   padding: 36px 32px;
-  max-width: 1180px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 .footer-links{ display:flex; gap: 20px; flex-wrap: wrap; }

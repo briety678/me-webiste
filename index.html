@@ -5,12 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bria Han — Growth &amp; GTM Marketer</title>
 <meta name="description" content="Bria Han — growth marketing lead scaling AI and Web3 startups from zero to launch.">
-<link rel="stylesheet" href="css/style.css?v=1788288239">
-<link rel="stylesheet" href="css/home.css?v=1788288239">
+<link rel="stylesheet" href="css/style.css?v=1788389389">
+<link rel="stylesheet" href="css/home.css?v=1788394858">
+<link rel="stylesheet" href="css/intro.css?v=1788391238">
 </head>
 <body>
 
 <nav class="site-nav">
+<div class="nav-inner">
   <a href="index.html" class="logo">bria<span>.han</span></a>
   <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰ menu</button>
   <ul class="nav-links">
@@ -20,6 +22,7 @@
     <li><a href="events.html">events</a></li>
     <li><a href="projects.html">projects</a></li>
   </ul>
+</div>
 </nav>
 
 <main>
@@ -80,20 +83,25 @@
           <span class="obj-caption">Projects<small>content, gtm, marketing — startups &amp; tech</small></span>
         </a>
 
-        <!-- AirDrop mini-card, with a real photo → about me -->
-        <div class="flatlay-item pos-5 obj-airdrop" style="--delay:360ms">
-          <div class="airdrop-mini">
-            <div class="airdrop-mini-top">
-              <div class="airdrop-mini-title">AirDrop</div>
-              <div class="airdrop-mini-msg">Bria would like to share her world with you</div>
+        <!-- ID-badge card, with a real photo → about me -->
+        <a class="flatlay-item pos-5 obj-contactcard" href="life.html" aria-label="About Me" data-drag style="--delay:360ms">
+          <div class="contact-card">
+            <div class="contact-card-clip"></div>
+            <div class="contact-card-title">Welcome<span>*</span></div>
+            <div class="contact-card-photo">
+              <img src="assets/life/photo-professional.jpg" alt="" draggable="false">
+              <span class="contact-doodle contact-doodle--star" aria-hidden="true">★</span>
+              <span class="contact-doodle contact-doodle--heart" aria-hidden="true">♥</span>
             </div>
-            <img class="airdrop-mini-photo" src="assets/life/photo-1.jpg" alt="" draggable="false">
-            <div class="airdrop-mini-bottom">
-              <button type="button" class="airdrop-decline">Decline</button>
-              <button type="button" class="airdrop-accept">Accept</button>
+            <div class="contact-card-fields">
+              <div class="contact-field"><span class="label">name</span><span class="val val--hand">Bria Han</span></div>
+              <div class="contact-field"><span class="label">based</span><span class="val val--hand">New York</span></div>
+              <div class="contact-field"><span class="label">field</span><span class="val val--hand">Tech · Creative · Community</span></div>
             </div>
+            <div class="contact-card-note">the holder of this card is worth a hello.</div>
           </div>
-        </div>
+          <span class="obj-caption">About Bria<small>meet the person behind the desk</small></span>
+        </a>
 
         <!-- Real Spotify embed — plays in place, never leaves the site -->
         <div class="flatlay-item pos-6 obj-music" data-drag style="--delay:450ms">
@@ -126,6 +134,7 @@
   </div>
 </footer>
 
-<script src="js/main.js?v=1788288239"></script>
+<script src="js/main.js?v=1788389389"></script>
+<script src="js/intro.js?v=1788391238"></script>
 </body>
 </html>

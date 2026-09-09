@@ -82,7 +82,13 @@
   background:
     repeating-linear-gradient(180deg, rgba(0,0,0,0.06) 0 2px, transparent 2px 6px),
     var(--paper-card);
-  box-shadow: 0 16px 32px rgba(0,0,0,0.16);
+  /* real page-cut edges catch light along the top and sit in shadow along
+     the bottom — without this each sliver reads as a flat swatch, not a
+     stack of actual paper with thickness */
+  box-shadow:
+    0 16px 32px rgba(0,0,0,0.16),
+    inset 0 1px 0 rgba(255,255,255,0.8),
+    inset 0 -3px 4px -2px rgba(0,0,0,0.18);
   pointer-events: auto;
   cursor: pointer;
   transition: transform .3s ease;
@@ -101,21 +107,39 @@
   .book-stack{ display: none; }
 }
 
-.visa-spread,
-.flip-leaf{
+.visa-spread{
   position: relative;
   display: grid;
   grid-template-columns: 1fr 1.2fr;
-  min-height: 420px;
+  /* every real page in a book is the same physical size regardless of how
+     much is printed on it — a fixed height (not min-height) is what makes
+     that true here too. 600px comfortably fits the busiest page (the
+     passport bio-data spread, now carrying a couple of extra fields);
+     shorter pages just carry natural whitespace below their content,
+     exactly like a real page would. */
+  height: 600px;
+  width: 100%;
   background: var(--paper-card);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   box-shadow: 0 30px 60px rgba(0,0,0,0.16);
   overflow: hidden;
+  transition: transform .18s ease-out;
+  will-change: transform;
+}
+.visa-page--detail,
+.visa-page--skills,
+.visa-page--passport-id{
+  /* a safety net, not the primary fix — if any single entry's content
+     ever runs long, it scrolls inside its own fixed-size page instead of
+     silently growing the whole book again */
+  max-height: 600px;
+  overflow-y: auto;
 }
 /* the fore-edge — a sliver of many thin bound pages, the detail that
    sells "this is one page of a whole book," not a single flat card */
-.visa-spread::after{
+.visa-spread::after,
+.flip-leaf::after{
   content: '';
   position: absolute;
   right: 0; top: 0; bottom: 0;
@@ -123,27 +147,68 @@
   background: repeating-linear-gradient(180deg, rgba(120,100,70,0.2) 0 1.5px, rgba(250,245,235,0.95) 1.5px 3px);
   pointer-events: none;
 }
-.visa-spread{
-  position: relative; width: 100%; height: 100%;
-  transition: transform .18s ease-out;
-  will-change: transform;
+/* the spine — a real open book isn't flat; the paper bows away from the
+   binding, so the gutter reads as a soft valley, darkest right at the
+   fold and easing out on both sides. Present at rest on the static
+   spread; the turning leaf below gets its own one-sided version. */
+.visa-spread::before{
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  background: linear-gradient(90deg,
+    transparent calc(45.45% - 70px),
+    rgba(30,20,10,0.09) calc(45.45% - 14px),
+    rgba(30,20,10,0.16) 45.45%,
+    rgba(30,20,10,0.09) calc(45.45% + 14px),
+    transparent calc(45.45% + 70px)
+  );
+}
+.visa-spread.is-passport-page::before{
+  background: linear-gradient(90deg,
+    transparent calc(50% - 70px),
+    rgba(30,20,10,0.09) calc(50% - 14px),
+    rgba(30,20,10,0.16) 50%,
+    rgba(30,20,10,0.09) calc(50% + 14px),
+    transparent calc(50% + 70px)
+  );
 }
 .book-stage{ cursor: pointer; }
 .book-stage.at-left-edge{ cursor: w-resize; }
 .book-stage.at-right-edge{ cursor: e-resize; }
 
+/* the flipping leaf is now only the RIGHT page — a real book's left page
+   never moves when you turn forward, so the left page just sits there
+   and its content updates underneath while only the right one turns.
+   Size/position are set inline in JS to match the real right page's rect
+   exactly; the leaf's own left edge is therefore always the true spine,
+   so it can pivot at a flat 0% with no per-page-type origin math needed. */
 .flip-leaf{
   position: absolute;
-  inset: 0;
   z-index: 15;
-  /* pivot at the spine (the boundary between the 1fr/1.2fr page columns),
-     not the outer edge — a real page turns from the binding, not the cover edge */
-  transform-origin: 45.45% center;
+  transform-origin: 0% center;
   transform-style: preserve-3d;
   backface-visibility: hidden;
   pointer-events: none;
   will-change: transform, box-shadow;
   box-shadow: 0 30px 60px rgba(0,0,0,0.16);
+  background: var(--paper-card);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  overflow: hidden;
+}
+.flip-leaf.is-passport-page{
+  background-color: color-mix(in srgb, var(--stampc-pink) 14%, var(--paper-card));
+}
+/* the turning page's own shadow near its hinge — one-sided, since the
+   rest of the gutter valley stays with the static left page below it */
+.flip-leaf::before{
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(30,20,10,0.18) 0, rgba(30,20,10,0.08) 40px, transparent 100px);
 }
 /* a soft shading overlay GSAP fades in/out over the course of the flip —
    the "light catching the paper as it curls" cue, timed against the actual
@@ -154,12 +219,16 @@
   inset: 0;
   pointer-events: none;
   opacity: 0;
+  background-size: 260% 100%;
+  background-repeat: no-repeat;
 }
 .flip-leaf-glow--next{
-  background: linear-gradient(90deg, transparent 20%, rgba(0,0,0,0.4) 55%, rgba(255,255,255,0.25) 75%, transparent 100%);
+  background-image: linear-gradient(90deg, transparent 30%, rgba(20,12,5,0.42) 46%, rgba(255,255,255,0.32) 54%, transparent 70%);
+  background-position: 100% 0;
 }
 .flip-leaf-glow--prev{
-  background: linear-gradient(270deg, transparent 20%, rgba(0,0,0,0.4) 55%, rgba(255,255,255,0.25) 75%, transparent 100%);
+  background-image: linear-gradient(270deg, transparent 30%, rgba(20,12,5,0.42) 46%, rgba(255,255,255,0.32) 54%, transparent 70%);
+  background-position: 100% 0;
 }
 /* the blank back of the page — pre-rotated 180°, so it only becomes visible
    once the leaf has turned past vertical, instead of the page just vanishing
@@ -168,7 +237,7 @@
   position: absolute;
   inset: 0;
   background: var(--paper-card);
-  border-radius: var(--radius-md);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
   box-shadow: inset 0 0 0 1px var(--line);
   backface-visibility: hidden;
   transform: rotateY(180deg);
@@ -194,8 +263,7 @@
 .visa-page--stamp .visa-company{ font-family: var(--font-display); font-weight:700; font-size: 22px; }
 
 /* ---------- page 1: the passport bio-data spread, pink paper ---------- */
-.visa-spread.is-passport-page,
-.flip-leaf.is-passport-page{
+.visa-spread.is-passport-page{
   background-color: color-mix(in srgb, var(--stampc-pink) 14%, var(--paper-card));
   /* a real passport's two facing leaves are the same physical size — the
      1fr/1.2fr split elsewhere is tuned for text-heavy role pages, not this one */
@@ -212,6 +280,8 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  padding-top: 24px;
+  padding-bottom: 20px;
   overflow: hidden;
   isolation: isolate;
 }
@@ -261,16 +331,16 @@
 .passport-id-title{
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 26px;
+  font-size: 24px;
   letter-spacing: .03em;
   text-transform: uppercase;
   text-shadow: 0 1px 0 rgba(255,255,255,0.6);
   border-bottom: 2px solid var(--ink);
   display: inline-block;
-  padding-bottom: 4px;
-  margin-bottom: 16px;
+  padding-bottom: 3px;
+  margin-bottom: 12px;
 }
-.passport-id-head{ display: flex; gap: 16px; align-items: flex-start; margin-bottom: 12px; }
+.passport-id-head{ display: flex; gap: 16px; align-items: flex-start; margin-bottom: 10px; }
 .passport-id-head .passport-field{ flex: 1; margin-bottom: 0; align-self: flex-end; }
 .passport-id-photo{
   flex: none;
@@ -283,30 +353,38 @@
 .passport-id-photo img{ width: 100%; height: 100%; object-fit: cover; }
 .passport-mrz{
   margin-top: auto;
-  padding-top: 14px;
+  padding-top: 10px;
   border-top: 1px dashed color-mix(in srgb, var(--stampc-pink) 40%, var(--ink));
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: .1em;
   color: var(--ink-soft);
-  line-height: 1.7;
+  line-height: 1.5;
   word-break: break-all;
 }
-.passport-field{ margin-bottom: 12px; }
-.passport-field .label{ margin-bottom: 4px; }
+.passport-field{ margin-bottom: 9px; }
+.passport-field .label{ margin-bottom: 3px; }
 .passport-box{
   background: #fff;
   border: 1px solid var(--line);
   border-radius: 4px;
-  padding: 7px 10px;
+  padding: 6px 10px;
   font-family: var(--font-mono);
   font-size: 13px;
   color: var(--ink);
 }
+/* the one field that isn't official — a little personality snuck onto
+   an otherwise deadpan document, in the same handwriting used elsewhere
+   on the site for anything personal rather than administrative */
+.passport-box--fun{
+  font-family: var(--font-hand);
+  font-size: 17px;
+  color: var(--stampc-pink);
+}
 .passport-field-row{ display: flex; gap: 12px; }
-.passport-field-row .passport-field{ flex: 1; margin-bottom: 12px; }
-.passport-box--edu{ padding: 8px 10px; }
-.edu-logos{ display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; align-items: center; }
+.passport-field-row .passport-field{ flex: 1; margin-bottom: 9px; }
+.passport-box--edu{ padding: 6px 10px; }
+.edu-logos{ display: flex; gap: 12px; margin-top: 4px; flex-wrap: wrap; align-items: center; }
 .edu-logo-item{
   position: relative;
   height: 40px;
@@ -347,7 +425,7 @@
   transform: translateX(-50%) translateY(0);
 }
 .passport-signature-row{
-  margin-top: 18px;
+  margin-top: 10px;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
