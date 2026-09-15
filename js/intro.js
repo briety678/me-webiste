@@ -20,6 +20,7 @@ function markup(){
         <button class="intro-link intro-link--bold" data-action="accept" type="button">Accept</button>
       </div>
     </div>
+    <div class="intro-credit">with thanks to Apple's AirDrop for the inspo — no affiliation, just a fan 🩷</div>
   `;
 }
 
