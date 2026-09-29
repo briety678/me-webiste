@@ -100,7 +100,7 @@ const CONFIG = {
   imageWidth: 210,
   imageHeight: 280,
   spacing: 3,
-  speed: 5,        // auto-rotate speed (matches the OriginKit "speed" prop)
+  speed: 2,        // auto-rotate speed (matches the OriginKit "speed" prop)
   direction: 'right',
   sensitivity: 5,  // drag-to-rotation sensitivity
   tilt: -8,
