@@ -1,0 +1,279 @@
+/* =====================================================================
+   PROJECT FOLDER — v2
+   Real-material folder + paper-pop-up mechanic. Two typefaces (Fraunces
+   for the title, the site's existing Courier Prime for meta/UI), one
+   cohesive dusty-pastel palette, textures instead of flat fills, soft
+   layered shadows instead of hard offset ones.
+   ===================================================================== */
+
+:root{
+  --font-folder-display: 'Fraunces', Georgia, serif;
+
+  /* pulled from the site's own palette (--stampc-babyblue / --stampc-pink
+     in style.css) rather than a separate set — same two families the rest
+     of the site already leans on, just softened into a muted dusty tone */
+  --pf-blue:       #c9d9e6;
+  --pf-blue-dark:  #9ab5cb;
+  --pf-pink:       #ecd4de;
+  --pf-pink-dark:  #d3a3b8;
+}
+
+.pfolder-stage{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+.pfolder{
+  position: relative;
+  width: 300px;
+  height: 212px;
+  perspective: 1400px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.pfolder:focus-visible{ outline: 2px solid #7a8a99; outline-offset: 6px; border-radius: 14px; }
+
+/* soft contact shadow on the surface below — grows and softens on hover
+   rather than a hard offset drop-shadow */
+.pfolder-shadow{
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: -10px;
+  height: 26px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(35,32,45,0.30) 0%, rgba(35,32,45,0) 72%);
+  filter: blur(5px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ---------- the tab, a stitched-label patch ---------- */
+.pfolder-tab{
+  position: absolute;
+  top: 0; left: 24px;
+  width: 104px; height: 28px;
+  border-radius: 9px 9px 0 0;
+  z-index: 1;
+  overflow: hidden;
+}
+.pfolder-tab-label{
+  display: block;
+  margin: 6px 8px 0;
+  padding: 2px 0;
+  text-align: center;
+  border: 1px dashed rgba(255,255,255,0.55);
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.92);
+  text-shadow: 0 1px 1px rgba(0,0,0,0.15);
+}
+
+/* ---------- the back body ---------- */
+.pfolder-back{
+  position: absolute;
+  top: 16px; left: 0; right: 0; bottom: 0;
+  border-radius: 3px 15px 15px 15px;
+  z-index: 1;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.35);
+}
+
+/* smooth dimensional gradients — a soft directional sheen instead of a
+   literal woven/ribbed texture, shared by tab + back + front */
+.pfolder-tab,
+.pfolder-back,
+.pfolder-front{
+  background-repeat: no-repeat;
+}
+.pfolder[data-tone="blue"] .pfolder-tab,
+.pfolder[data-tone="blue"] .pfolder-back{
+  background-color: var(--pf-blue-dark);
+  background-image:
+    radial-gradient(130% 130% at 18% 0%, rgba(255,255,255,0.4), transparent 60%),
+    linear-gradient(155deg, var(--pf-blue) 0%, var(--pf-blue-dark) 100%);
+}
+.pfolder[data-tone="blue"] .pfolder-front{
+  background-color: var(--pf-blue);
+  background-image:
+    radial-gradient(130% 130% at 18% 0%, rgba(255,255,255,0.65), transparent 55%),
+    linear-gradient(155deg, #e3edf3 0%, var(--pf-blue) 55%, var(--pf-blue-dark) 130%);
+}
+
+.pfolder[data-tone="pink"] .pfolder-tab,
+.pfolder[data-tone="pink"] .pfolder-back{
+  background-color: var(--pf-pink-dark);
+  background-image:
+    radial-gradient(130% 130% at 18% 0%, rgba(255,255,255,0.4), transparent 60%),
+    linear-gradient(155deg, var(--pf-pink) 0%, var(--pf-pink-dark) 100%);
+}
+.pfolder[data-tone="pink"] .pfolder-front{
+  background-color: var(--pf-pink);
+  background-image:
+    radial-gradient(130% 130% at 18% 0%, rgba(255,255,255,0.65), transparent 55%),
+    linear-gradient(155deg, #f4e5ec 0%, var(--pf-pink) 55%, var(--pf-pink-dark) 130%);
+}
+
+/* ---------- the papers — hidden at rest, rise and fan out on hover ---------- */
+.pfolder-papers{
+  position: absolute;
+  left: 50%;
+  top: 34px;
+  transform: translateX(-50%);
+  width: 74%;
+  height: 82px;
+  z-index: 2;
+  pointer-events: none;
+}
+.pfolder-paper{
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 108px;
+  height: 76px;
+  margin-left: -54px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 2px;
+  padding: 10px;
+  border-radius: 8px;
+  background: #fffdf8;
+  box-shadow: 0 12px 22px rgba(30,25,20,0.16);
+  opacity: 0;
+  transform: translateY(30px) scale(.86) rotate(0deg);
+}
+.pfolder-paper-num{
+  font-family: var(--font-folder-display);
+  font-weight: 600;
+  font-size: 20px;
+  color: #2b2f36;
+}
+.pfolder-paper-label{
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: #8a8378;
+}
+.pfolder-paper--note p{
+  margin: 0;
+  font-family: var(--font-hand, 'Caveat', cursive);
+  font-size: 16px;
+  line-height: 1.25;
+  color: #4a4640;
+}
+
+/* ---------- the front — the closed folder's visible face ---------- */
+.pfolder-front{
+  position: absolute;
+  top: 66px; left: 0; right: 0; bottom: 0;
+  z-index: 3;
+  border-radius: 13px;
+  padding: 20px 22px 18px;
+  display: flex;
+  flex-direction: column;
+  transform-origin: 50% 100%;
+  box-shadow:
+    0 14px 28px rgba(40,45,55,0.20),
+    0 2px 0 rgba(255,255,255,0.45) inset;
+}
+.pfolder-title{
+  margin: 0 0 8px;
+  font-family: var(--font-folder-display);
+  font-weight: 600;
+  font-size: 19px;
+  line-height: 1.28;
+  color: #262a30;
+}
+.pfolder-meta{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .01em;
+  color: rgba(38,42,48,0.6);
+}
+.pfolder-stat{
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: rgba(38,42,48,0.42);
+}
+.pfolder-link{
+  align-self: flex-start;
+  margin-top: auto;
+  padding: 2px 0;
+  background: none;
+  border: none;
+  border-bottom: 1px solid rgba(38,42,48,0.55);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: #262a30;
+  cursor: pointer;
+  transition: color .2s ease, border-color .2s ease;
+}
+.pfolder-link:hover{ color: var(--pf-accent, #93aec4); border-color: var(--pf-accent, #93aec4); }
+.pfolder[data-tone="blue"]{ --pf-accent: var(--pf-blue-dark); }
+.pfolder[data-tone="pink"]{ --pf-accent: var(--pf-pink-dark); }
+
+@media (prefers-reduced-motion: reduce){
+  .pfolder-front, .pfolder-paper, .pfolder-shadow{ transition: none !important; }
+}
+
+@media (max-width: 420px){
+  .pfolder{ width: 92vw; max-width: 320px; }
+}
+
+/* ---------- the case study — a calm, soft-carded reveal below the
+   folder, replacing the old colored-tape/ruled-line treatment. Same
+   two-typeface hierarchy: mono labels, plain body copy. ---------- */
+.pfolder-case{
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .5s ease;
+}
+.pfolder-case.open{ max-height: 900px; }
+.pfolder-case-inner{
+  padding: 26px 2px 6px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 20px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity .4s ease .1s, transform .4s ease .1s;
+}
+.pfolder-case.open .pfolder-case-inner{ opacity: 1; transform: translateY(0); }
+@media (max-width: 620px){
+  .pfolder-case-inner{ grid-template-columns: 1fr; }
+}
+.pfc-block{
+  background: #fffdf9;
+  border-radius: 10px;
+  padding: 16px 18px;
+  box-shadow: 0 8px 18px rgba(40,40,55,0.08);
+}
+.pfc-block .label{
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.pfc-block p{ margin: 0; font-size: 14px; line-height: 1.55; color: var(--ink-soft); }
+.pfolder-case-link{
+  grid-column: 1 / -1;
+  display: inline-block;
+  width: fit-content;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--ink);
+  border-bottom: 1px solid var(--ink);
+}

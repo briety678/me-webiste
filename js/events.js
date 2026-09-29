@@ -68,6 +68,20 @@ const EVENTS = [
     cover: 'assets/events/shenzhen-nexus.jpg', color: 'var(--stampc-babyblue)',
     note: 'global city community meetup series',
     links: [{ label: 'view post ↗', url: 'https://x.com/NexusLabs/status/1971316166917501093' }]
+  },
+  {
+    city: 'New York, NY', cityId: 'nyc', flag: '🇺🇸', category: 'dinner',
+    title: 'Oasis HQ Dinner',
+    cover: 'assets/events/oasis-dinner.jpg', color: 'var(--stampc-pink)',
+    note: 'Oasis HQ, Columbus Circle · founders, investors & builders',
+    links: [{ label: 'view event ↗', url: 'https://luma.com/xjl8eoqe' }]
+  },
+  {
+    city: 'New York, NY', cityId: 'nyc', flag: '🇺🇸', category: 'community',
+    title: 'Mooncakes & Making 🥮 at Oasis HQ',
+    cover: 'assets/events/oasis-mooncakes.jpg', color: 'var(--stampc-mustard)',
+    note: 'Sept 25, 2025 · Mid-Autumn mooncake-making at Oasis HQ',
+    links: [{ label: 'view event ↗', url: 'https://luma.com/patt0b66' }]
   }
 ];
 
