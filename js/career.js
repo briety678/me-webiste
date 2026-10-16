@@ -189,80 +189,146 @@ function spreadHTML(r){
   if (r.isPassportBio){
     return `
       <div class="visa-page visa-page--passport-stamps">
-        <div class="stamp stamp--circle rot-1" style="--c:var(--stampc-blue)" data-detail="born here — the thread that runs through everything i care about, especially education">
-          <img class="stamp-icon-img" src="assets/mahjong-icon.jpg" alt="">
-          <div class="stamp-title">CHINA</div>
-          <div class="stamp-sub">BORN</div>
+        <div class="pp-page-head"><span>VISAS</span><span>VISTOS</span></div>
+
+        <div class="ink-stamp" style="--w:176px; --x:5%; --y:5%; --rot:-8deg; --ink:#b8362e; z-index:2"
+             data-detail="born here — the thread that runs through everything i care about, especially education">
+          <svg viewBox="0 0 200 200" role="img" aria-label="China, born here"><g filter="url(#inkRough)" fill="none" stroke="currentColor">
+            <circle cx="100" cy="100" r="94" stroke-width="4"/>
+            <circle cx="100" cy="100" r="85" stroke-width="1.4"/>
+            <circle cx="100" cy="100" r="55" stroke-width="2"/>
+            <path id="arcChina" d="M100,100 m-70,0 a70,70 0 1,1 140,0 a70,70 0 1,1 -140,0" stroke="none"/>
+            <text font-family="Josefin Sans, sans-serif" font-weight="700" font-size="13" letter-spacing="2" fill="currentColor" stroke="none"><textPath href="#arcChina" startOffset="0" textLength="432" lengthAdjust="spacing">IMMIGRATION · CHINA · ORIGIN ·</textPath></text>
+            <text x="100" y="97" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-weight="700" font-size="25" letter-spacing="2" fill="currentColor" stroke="none">CHINA</text>
+            <text x="100" y="118" text-anchor="middle" font-family="Courier Prime, monospace" font-weight="700" font-size="13" letter-spacing="3" fill="currentColor" stroke="none">★ BORN ★</text>
+          </g></svg>
         </div>
-        <div class="stamp stamp--hex rot-3" style="--c:var(--stampc-red)" data-detail="part of my education happened here, between the UK and the US">
-          <img class="stamp-icon-img" src="assets/london-icon.jpg" alt="">
-          <div class="stamp-title">UK</div>
+
+        <div class="ink-stamp" style="--w:178px; --x:49%; --y:7%; --rot:6deg; --ink:#2f4f9e; z-index:3"
+             data-detail="part of my education happened here, between the UK and the US">
+          <svg viewBox="0 0 220 132" role="img" aria-label="United Kingdom arrival"><g filter="url(#inkRough)" fill="none" stroke="currentColor">
+            <rect x="4" y="4" width="212" height="124" rx="8" stroke-width="4"/>
+            <rect x="12" y="12" width="196" height="108" rx="4" stroke-width="1.3"/>
+            <text x="110" y="36" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-weight="600" font-size="12.5" letter-spacing="3.2" fill="currentColor" stroke="none">UNITED KINGDOM</text>
+            <line x1="26" y1="46" x2="194" y2="46" stroke-width="1.3"/>
+            <text x="110" y="82" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-weight="700" font-size="34" letter-spacing="3" fill="currentColor" stroke="none">ARRIVAL</text>
+            <line x1="26" y1="92" x2="194" y2="92" stroke-width="1.3"/>
+            <text x="110" y="110" text-anchor="middle" font-family="Courier Prime, monospace" font-weight="700" font-size="12" letter-spacing="2" fill="currentColor" stroke="none">LONDON · SURREY</text>
+          </g></svg>
         </div>
-        <div class="stamp stamp--tri rot-2" style="--c:var(--stampc-green)" data-detail="Ed.M at Harvard — and where my first venture, an education startup, got its start">
-          <img class="stamp-icon-img" src="assets/boston-icon.jpg" alt="">
-          <div class="stamp-title">CAMBRIDGE, US</div>
-          <div class="stamp-sub">HARVARD ED.M</div>
+
+        <div class="ink-stamp" style="--w:176px; --x:27%; --y:27%; --rot:5deg; --ink:#c2185b; z-index:4"
+             data-detail="Ed.M at Harvard — and where my first venture, an education startup, got its start">
+          <svg viewBox="0 0 200 200" role="img" aria-label="Cambridge, Harvard Ed.M"><g filter="url(#inkRough)" fill="none" stroke="currentColor">
+            <polygon points="100,5 195,100 100,195 5,100" stroke-width="4"/>
+            <polygon points="100,16 184,100 100,184 16,100" stroke-width="1.3"/>
+            <text x="100" y="72" text-anchor="middle" font-family="Courier Prime, monospace" font-weight="700" font-size="11.5" letter-spacing="3" fill="currentColor" stroke="none">ARRIVAL</text>
+            <text x="100" y="101" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-weight="700" font-size="22" letter-spacing="1" fill="currentColor" stroke="none">CAMBRIDGE</text>
+            <line x1="52" y1="110" x2="148" y2="110" stroke-width="1.4"/>
+            <text x="100" y="130" text-anchor="middle" font-family="Courier Prime, monospace" font-weight="700" font-size="11.5" letter-spacing="2" fill="currentColor" stroke="none">HARVARD ED.M</text>
+          </g></svg>
         </div>
-        <div class="stamp stamp--rect rot-5" style="--c:var(--stampc-mustard)" data-detail="based here since diving deep into tech startups">
-          <img class="stamp-icon-img" src="assets/nyc-icon.jpg" alt="">
-          <div class="stamp-title">NEW YORK, NY</div>
-          <div class="stamp-sub">BASED HERE NOW</div>
+
+        <div class="ink-stamp" style="--w:184px; --x:3%; --y:47%; --rot:-5deg; --ink:#d2691e; z-index:3"
+             data-detail="based here since diving deep into tech startups">
+          <svg viewBox="0 0 220 132" role="img" aria-label="New York, based here now"><g filter="url(#inkRough)" fill="none" stroke="currentColor">
+            <rect x="4" y="4" width="212" height="124" rx="6" stroke-width="4"/>
+            <rect x="4" y="4" width="212" height="30" fill="currentColor" stroke="none" opacity=".95"/>
+            <text x="110" y="25" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-weight="700" font-size="14" letter-spacing="4" fill="#fff" stroke="none" style="mix-blend-mode:normal">U.S. · ADMITTED</text>
+            <text x="110" y="72" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-weight="700" font-size="21" letter-spacing=".6" fill="currentColor" stroke="none">NEW YORK, NY</text>
+            <line x1="22" y1="84" x2="198" y2="84" stroke-width="1.4"/>
+            <text x="110" y="109" text-anchor="middle" font-family="Courier Prime, monospace" font-weight="700" font-size="13" letter-spacing="3" fill="currentColor" stroke="none">BASED HERE NOW</text>
+          </g></svg>
         </div>
-        <div class="stamp stamp--circle rot-4" style="--c:var(--stampc-blue)" data-detail="the language i grew up thinking in">
-          <div class="stamp-icon">文</div>
-          <div class="stamp-title">MANDARIN</div>
-          <div class="stamp-sub">NATIVE</div>
+
+        <div class="ink-stamp" style="--w:196px; --x:44%; --y:50%; --rot:7deg; --ink:#1f6f78; z-index:4"
+             data-detail="the language i grew up thinking in">
+          <svg viewBox="0 0 220 140" role="img" aria-label="Mandarin, native"><g filter="url(#inkRough)" fill="none" stroke="currentColor">
+            <ellipse cx="110" cy="70" rx="105" ry="65" stroke-width="3.6" stroke-dasharray="9 5"/>
+            <ellipse cx="110" cy="70" rx="93" ry="53" stroke-width="1.3"/>
+            <text x="110" y="75" text-anchor="middle" font-family="serif" font-weight="700" font-size="44" fill="currentColor" stroke="none">文</text>
+            <text x="110" y="29" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-weight="700" font-size="13" letter-spacing="4" fill="currentColor" stroke="none">MANDARIN</text>
+            <text x="110" y="117" text-anchor="middle" font-family="Courier Prime, monospace" font-weight="700" font-size="13" letter-spacing="4" fill="currentColor" stroke="none">NATIVE</text>
+          </g></svg>
         </div>
-        <div class="stamp stamp--hex rot-1" style="--c:var(--stampc-green)" data-detail="still practicing — send me your favorite k-dramas">
-          <div class="stamp-icon">한</div>
-          <div class="stamp-title">KOREAN</div>
-          <div class="stamp-sub">LEARNING</div>
+
+        <div class="ink-stamp" style="--w:150px; --x:13%; --y:72%; --rot:-4deg; --ink:#3b7d4f; z-index:3"
+             data-detail="still practicing — send me your favorite k-dramas">
+          <svg viewBox="0 0 200 140" role="img" aria-label="Korean, learning"><g filter="url(#inkRough)" fill="none" stroke="currentColor">
+            <polygon points="52,5 148,5 195,70 148,135 52,135 5,70" stroke-width="3.8"/>
+            <polygon points="56,15 144,15 184,70 144,125 56,125 16,70" stroke-width="1.2"/>
+            <text x="100" y="64" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="34" fill="currentColor" stroke="none">한</text>
+            <text x="100" y="88" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-weight="700" font-size="14" letter-spacing="3" fill="currentColor" stroke="none">KOREAN</text>
+            <text x="100" y="106" text-anchor="middle" font-family="Courier Prime, monospace" font-weight="700" font-size="10.5" letter-spacing="3" fill="currentColor" stroke="none">LEARNING</text>
+          </g></svg>
         </div>
+
+        <div class="ink-stamp ink-stamp--static" aria-hidden="true" style="--w:196px; --x:46%; --y:79%; --rot:-13deg; --ink:#34609e; z-index:5">
+          <svg viewBox="0 0 240 84"><g filter="url(#inkRough)" fill="none" stroke="currentColor">
+            <rect x="4" y="4" width="232" height="76" rx="5" stroke-width="4.5"/>
+            <rect x="11" y="11" width="218" height="62" rx="2" stroke-width="1.3"/>
+            <text x="120" y="55" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-weight="700" font-size="38" letter-spacing="5" fill="currentColor" stroke="none">APPROVED</text>
+          </g></svg>
+        </div>
+
+        <div class="pp-page-num">2</div>
       </div>
+
       <div class="visa-page visa-page--passport-id">
-        <div class="passport-chip" aria-hidden="true"></div>
-        <div class="passport-id-title">Passport</div>
-        <div class="passport-id-head">
-          <div class="passport-id-photo"><img src="assets/life/photo-professional.jpg" alt="Bria Han"></div>
-          <div class="passport-field">
-            <div class="label">name</div>
-            <div class="passport-box">Bria Han</div>
+        <div class="pid-title">Bria's Passport</div>
+
+        <div class="pid-main">
+          <div class="pid-photo">
+            <img src="assets/life/photo-professional.jpg" alt="Bria Han">
+          </div>
+          <div class="pid-fields">
+            <div class="pid-field">
+              <div class="pid-label">Name</div>
+              <div class="pid-bar">BRIA HAN</div>
+            </div>
+            <div class="pid-field-row">
+              <div class="pid-field">
+                <div class="pid-label">Based in</div>
+                <div class="pid-bar">NEW YORK, NY</div>
+              </div>
+              <div class="pid-field">
+                <div class="pid-label">Experience</div>
+                <div class="pid-bar">4+ YRS · SINCE 2021</div>
+              </div>
+            </div>
+            <div class="pid-field">
+              <div class="pid-label">Field</div>
+              <div class="pid-bar pid-bar--hand">mysterious gorg girl in tech</div>
+            </div>
           </div>
         </div>
-        <div class="passport-field-row">
-          <div class="passport-field">
-            <div class="label">based in</div>
-            <div class="passport-box">New York, NY</div>
-          </div>
-          <div class="passport-field">
-            <div class="label">experience</div>
-            <div class="passport-box">4+ yrs · since 2021</div>
-          </div>
-        </div>
-        <div class="passport-field">
-          <div class="label">field</div>
-          <div class="passport-box">mysterious gorg girl in tech</div>
-        </div>
-        <div class="passport-field">
-          <div class="label">education</div>
-          <div class="passport-box passport-box--edu">
+
+        <div class="pid-field">
+          <div class="pid-label">Education</div>
+          <div class="pid-bar pid-bar--edu">
             <div class="edu-logos">
               <div class="edu-logo-item"><img src="assets/logos/harvard-word.png" alt="Harvard University"></div>
               <div class="edu-logo-item"><img src="assets/logos/surrey-word.png" alt="University of Surrey"></div>
             </div>
           </div>
         </div>
-        <div class="passport-field">
-          <div class="label">fun fact</div>
-          <div class="passport-box passport-box--fun">i'm a fun person and that is a fact :)</div>
+
+        <div class="pid-field">
+          <div class="pid-label">Fun fact</div>
+          <div class="pid-bar pid-bar--hand">i'm a fun person and that is a fact :)</div>
         </div>
-        <div class="passport-signature-row">
-          <div class="passport-property">property of<br><strong>bria.han</strong></div>
-          <div class="passport-signature">Bria Han</div>
+
+        <div class="pid-foot">
+          <div class="pid-property">PROPERTY OF<strong>bria.han</strong></div>
+          <div class="pid-sig">
+            <div class="pid-label">Signature</div>
+            <div class="pid-sig-script">Bria Han</div>
+          </div>
         </div>
-        <div class="passport-mrz">
-          P&lt;USA&lt;HAN&lt;&lt;BRIA&lt;&lt;&lt;BASED&lt;IN&lt;NEW&lt;YORK&lt;NY&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br>
-          GROWTH&lt;MARKETER&lt;&lt;4&lt;YRS&lt;EXPERIENCE&lt;&lt;SINCE&lt;2021&lt;&lt;&lt;&lt;&lt;
+
+        <div class="pid-mrz">
+          P&lt;USA&lt;HAN&lt;&lt;BRIA&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br>
+          GROWTH&lt;MARKETER&lt;&lt;NYC&lt;&lt;SINCE&lt;2021&lt;&lt;&lt;&lt;&lt;&lt;&lt;
         </div>
       </div>
     `;
@@ -343,7 +409,7 @@ function closeStampTip(){
   activeStamp = null;
 }
 function wireStampDetails(root){
-  const stamps = root.querySelectorAll('.stamp[data-detail]');
+  const stamps = root.querySelectorAll('.stamp[data-detail], .ink-stamp[data-detail]');
   if (!stamps.length || !window.gsap) return;
   stamps.forEach(stamp => {
     stamp.addEventListener('click', (e) => {

@@ -5,10 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Career — Bria Han</title>
 <meta name="description" content="Every role, stamped like a visa page — flip through it like a real passport.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&family=Permanent+Marker&family=Mrs+Saint+Delafield&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css?v=1788331690">
-<link rel="stylesheet" href="css/career.css?v=1788986525">
+<link rel="stylesheet" href="css/career.css?v=1792200200">
 </head>
 <body>
+
+<!-- shared rubber-stamp ink texture: speckled gaps + slightly wobbly edges.
+     Zero-size (not display:none) so the filter still resolves in Safari/Firefox. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <filter id="inkRough" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="4" result="warp"/>
+      <feDisplacementMap in="SourceGraphic" in2="warp" scale="3" xChannelSelector="R" yChannelSelector="G" result="wobbly"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="9" result="grain"/>
+      <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.2 2.1" result="gaps"/>
+      <feComposite in="wobbly" in2="gaps" operator="in"/>
+    </filter>
+  </defs>
+</svg>
 
 <nav class="site-nav">
 <div class="nav-inner">
@@ -63,6 +80,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
 <script src="js/main.js?v=1788331690"></script>
-<script src="js/career.js?v=1788986160"></script>
+<script src="js/career.js?v=1792200200"></script>
 </body>
 </html>

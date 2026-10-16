@@ -262,147 +262,138 @@
 .visa-page--stamp .visa-dates{ font-family: var(--font-mono); font-size: 13px; color: var(--ink-soft); }
 .visa-page--stamp .visa-company{ font-family: var(--font-display); font-weight:700; font-size: 22px; }
 
-/* ---------- page 1: the passport bio-data spread, pink paper ---------- */
+/* ---------- page 1: the passport bio-data spread ----------
+   Modelled on a real booklet: pale blue-grey stock printed with a
+   guilloche security lattice, rubber-stamp visas inked straight onto the
+   page, and flat printed data fields (no form-input chrome). */
+.visa-spread.is-passport-page,
+.flip-leaf.is-passport-page{
+  --pp-ink: #232b36;
+  --pp-line: rgba(70,110,150,.2);
+  background-color: #d9e6f0;
+  background-image:
+    repeating-linear-gradient(60deg,  var(--pp-line) 0 1px, transparent 1px 17px),
+    repeating-linear-gradient(-60deg, var(--pp-line) 0 1px, transparent 1px 17px),
+    radial-gradient(120% 90% at 50% 38%, #edf4f9 0%, #d3e1ed 70%, #c6d7e5 100%);
+}
 .visa-spread.is-passport-page{
-  background-color: color-mix(in srgb, var(--stampc-pink) 14%, var(--paper-card));
-  /* a real passport's two facing leaves are the same physical size — the
-     1fr/1.2fr split elsewhere is tuned for text-heavy role pages, not this one */
+  /* a real passport's two facing leaves are the same physical size */
   grid-template-columns: 1fr 1fr;
+  border-color: #3b4656;
 }
+.flip-leaf.is-passport-page{ box-shadow: 0 30px 60px rgba(0,0,0,0.16), inset 0 0 0 1px #3b4656; }
+/* the shared passport-paper double rule reads as stationery, not a visa page */
+.visa-spread.is-passport-page::after,
+.flip-leaf.is-passport-page::after{ background: repeating-linear-gradient(180deg, rgba(60,80,100,0.22) 0 1.5px, rgba(238,244,249,0.95) 1.5px 3px); }
+
 .visa-page--passport-stamps{
-  border-right: 2px dashed var(--line);
-  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
-  gap: 18px 22px;
+  position: relative;
+  padding: 0;
+  border-right: 0;
+  overflow: hidden;
 }
-.visa-page--passport-stamps .stamp{ width: 132px; height: 128px; }
+.pp-page-head{
+  position: absolute; top: 16px; left: 0; right: 0;
+  display: flex; justify-content: center; gap: 14px;
+  font-family: 'Josefin Sans', sans-serif; font-weight: 600;
+  font-size: 11px; letter-spacing: .42em;
+  color: rgba(35,43,54,.55);
+}
+.pp-page-num{
+  position: absolute; bottom: 14px; left: 0; right: 0; text-align: center;
+  font-family: 'Josefin Sans', sans-serif; font-weight: 600; font-size: 12px;
+  letter-spacing: .2em; color: rgba(35,43,54,.5);
+}
+
+/* rubber-stamp visas — absolutely scattered and overlapping like the real
+   thing; multiply blending lets the lattice and neighbouring inks show through */
+.ink-stamp{
+  position: absolute;
+  left: var(--x); top: var(--y);
+  width: var(--w);
+  color: var(--ink);
+  transform: rotate(var(--rot, 0deg));
+  mix-blend-mode: multiply;
+  opacity: 1;
+  cursor: pointer;
+  transition: opacity .2s ease;
+}
+.ink-stamp svg{ display: block; width: 100%; height: auto; overflow: visible; }
+.ink-stamp:hover{ opacity: 1; }
+.ink-stamp--static{ pointer-events: none; cursor: default; }
 
 .visa-page--passport-id{
   position: relative;
   display: flex;
   flex-direction: column;
-  padding-top: 24px;
-  padding-bottom: 20px;
+  padding: 30px 32px 20px;
   overflow: hidden;
-  isolation: isolate;
+  font-family: 'Josefin Sans', sans-serif;
 }
-/* fine security-print dot pattern — the "this is an official document" cue */
-.visa-page--passport-id::before{
-  content: '';
-  position: absolute;
-  inset: 14px;
-  border: 1px solid color-mix(in srgb, var(--stampc-pink) 45%, var(--ink));
-  outline: 1px solid color-mix(in srgb, var(--stampc-pink) 25%, var(--ink));
-  outline-offset: 4px;
-  background-image: radial-gradient(color-mix(in srgb, var(--stampc-pink) 35%, var(--ink)) .5px, transparent .5px);
-  background-size: 8px 8px;
-  background-position: -4px -4px;
-  opacity: .5;
-  pointer-events: none;
-  z-index: -1;
-}
-/* a laminate sheen sweeping across the page, like light catching plastic */
-.visa-page--passport-id::after{
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,0.55) 50%, transparent 60%);
-  pointer-events: none;
-  z-index: -1;
-}
-.passport-chip{
-  position: absolute;
-  top: 30px; right: 30px;
-  width: 34px; height: 26px;
-  border-radius: 4px;
-  background: linear-gradient(135deg, #ecd394 0%, #c9a45f 100%);
-  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.15);
-}
-.passport-chip::before{
-  content: '';
-  position: absolute;
-  inset: 5px;
-  border: 1px solid rgba(0,0,0,0.2);
-  border-radius: 2px;
-  background-image:
-    linear-gradient(rgba(0,0,0,0.15) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,0,0,0.15) 1px, transparent 1px);
-  background-size: 6px 6px;
-}
-.passport-id-title{
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 24px;
-  letter-spacing: .03em;
+.pid-title{
+  align-self: flex-start;
+  font-family: 'Permanent Marker', var(--font-display), cursive;
+  font-size: 31px;
+  line-height: 1.05;
+  letter-spacing: .01em;
   text-transform: uppercase;
-  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
-  border-bottom: 2px solid var(--ink);
-  display: inline-block;
-  padding-bottom: 3px;
-  margin-bottom: 12px;
+  color: var(--pp-ink, #232b36);
+  border-bottom: 3px solid var(--pp-ink, #232b36);
+  padding-bottom: 4px;
+  margin-bottom: 20px;
 }
-.passport-id-head{ display: flex; gap: 16px; align-items: flex-start; margin-bottom: 10px; }
-.passport-id-head .passport-field{ flex: 1; margin-bottom: 0; align-self: flex-end; }
-.passport-id-photo{
+.pid-main{ display: flex; gap: 18px; align-items: stretch; margin-bottom: 14px; }
+.pid-photo{
   flex: none;
-  width: 100px; height: 120px;
-  border-radius: 4px;
-  border: 2px solid var(--ink);
-  box-shadow: 0 3px 8px rgba(0,0,0,0.18);
-  overflow: hidden;
-}
-.passport-id-photo img{ width: 100%; height: 100%; object-fit: cover; }
-.passport-mrz{
-  margin-top: auto;
-  padding-top: 10px;
-  border-top: 1px dashed color-mix(in srgb, var(--stampc-pink) 40%, var(--ink));
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: .1em;
-  color: var(--ink-soft);
-  line-height: 1.5;
-  word-break: break-all;
-}
-.passport-field{ margin-bottom: 9px; }
-.passport-field .label{ margin-bottom: 3px; }
-.passport-box{
+  width: 128px;
+  align-self: flex-start;
+  padding: 3px;
   background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  padding: 6px 10px;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  color: var(--ink);
+  border: 1px solid #3b4656;
 }
-/* the one field that isn't official — a little personality snuck onto
-   an otherwise deadpan document, in the same handwriting used elsewhere
-   on the site for anything personal rather than administrative */
-.passport-box--fun{
+.pid-photo img{ display: block; width: 100%; height: 162px; object-fit: cover; object-position: center top; }
+.pid-fields{ flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; }
+.pid-field{ margin-bottom: 9px; }
+.pid-fields .pid-field:last-child{ margin-bottom: 0; }
+.pid-field-row{ display: flex; gap: 10px; margin-bottom: 9px; }
+.pid-field-row .pid-field{ flex: 1; min-width: 0; margin-bottom: 0; }
+.pid-label{
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--pp-ink, #232b36);
+  margin-bottom: 2px;
+}
+/* values are printed on a plain white strip, like the reference booklet */
+.pid-bar{
+  background: rgba(255,255,255,.93);
+  padding: 4px 9px;
+  font-weight: 400;
+  font-size: 13.5px;
+  letter-spacing: .09em;
+  line-height: 1.35;
+  color: var(--pp-ink, #232b36);
+}
+.pid-field-row .pid-bar{ font-size: 11.5px; letter-spacing: .05em; padding: 4px 7px; }
+/* the two lines that aren't official data are "filled in by hand", ballpoint-blue */
+.pid-bar--hand{
   font-family: var(--font-hand);
-  font-size: 17px;
-  color: var(--stampc-pink);
+  font-size: 18px;
+  letter-spacing: .01em;
+  line-height: 1.2;
+  color: #28418f;
+  padding-top: 3px; padding-bottom: 3px;
 }
-.passport-field-row{ display: flex; gap: 12px; }
-.passport-field-row .passport-field{ flex: 1; margin-bottom: 9px; }
-.passport-box--edu{ padding: 6px 10px; }
-.edu-logos{ display: flex; gap: 12px; margin-top: 4px; flex-wrap: wrap; align-items: center; }
+.pid-bar--edu{ padding: 5px 8px; }
+.edu-logos{ display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
 .edu-logo-item{
   position: relative;
-  height: 40px;
-  border-radius: 6px;
-  background: #fff;
-  border: 1px solid var(--line);
+  height: 32px;
   display: flex; align-items: center; justify-content: center;
-  padding: 6px 12px;
   cursor: default;
 }
-.edu-logo-item img{ height: 100%; width: auto; max-width: 140px; object-fit: contain; display: block; }
-.edu-text-logo{
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 14px;
-  letter-spacing: .02em;
-  white-space: nowrap;
-}
+.edu-logo-item img{ height: 100%; width: auto; max-width: 130px; object-fit: contain; display: block; }
 .edu-degree{
   position: absolute;
   bottom: 120%;
@@ -420,33 +411,58 @@
   transition: opacity .2s ease, transform .2s ease;
   z-index: 5;
 }
-.edu-logo-item:hover .edu-degree{
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-.passport-signature-row{
-  margin-top: 10px;
+.edu-logo-item:hover .edu-degree{ opacity: 1; transform: translateX(-50%) translateY(0); }
+
+.pid-foot{
+  margin-top: auto;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   gap: 16px;
+  padding-bottom: 10px;
 }
-.passport-property{
+.pid-property{
+  font-weight: 600;
+  font-size: 9.5px;
+  letter-spacing: .14em;
+  color: rgba(35,43,54,.7);
+  line-height: 1.3;
+}
+.pid-property strong{
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 17px;
+  letter-spacing: -.01em;
+  text-transform: none;
+  color: var(--pp-ink, #232b36);
+}
+.pid-sig{ text-align: right; }
+.pid-sig .pid-label{ margin-bottom: 6px; }
+.pid-sig-script{
+  font-family: 'Mrs Saint Delafield', 'Caveat', cursive;
+  font-size: 40px;
+  line-height: .9;
+  color: #151a24;
+  transform: rotate(-3deg);
+  transform-origin: right bottom;
+  padding-right: 4px;
+}
+/* machine-readable zone, printed on a white strip across the foot */
+.pid-mrz{
+  margin: 0 -8px;
+  padding: 6px 8px;
+  background: rgba(255,255,255,.9);
   font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--muted);
-  line-height: 1.4;
-}
-.passport-property strong{ color: var(--ink); font-family: var(--font-display); }
-.passport-signature{
-  font-family: var(--font-hand);
-  font-size: 26px;
-  color: var(--ink);
-  border-bottom: 1px solid var(--ink);
-  padding-bottom: 2px;
+  font-size: 11px;
+  letter-spacing: .06em;
+  line-height: 1.45;
+  color: #1a2029;
+  white-space: nowrap;
+  overflow: hidden;
 }
 @media (max-width: 760px){
-  .visa-page--passport-stamps{ border-right: none; border-bottom: 2px dashed var(--line); }
+  .visa-page--passport-stamps{ min-height: 600px; }
 }
 
 .visa-page--detail .label{ margin-bottom: 4px; }
