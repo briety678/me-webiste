@@ -189,80 +189,146 @@ function spreadHTML(r){
   if (r.isPassportBio){
     return `
       <div class="visa-page visa-page--passport-stamps">
-        <div class="stamp stamp--circle rot-1" style="--c:var(--stampc-blue)" data-detail="born here — the thread that runs through everything i care about, especially education">
-          <img class="stamp-icon-img" src="assets/mahjong-icon.jpg" alt="">
-          <div class="stamp-title">CHINA</div>
-          <div class="stamp-sub">BORN</div>
+        <div class="pp-page-head"><span>VISAS</span><span>VISTOS</span></div>
+
+        <div class="ink-stamp" style="--w:176px; --x:5%; --y:5%; --rot:-8deg; --ink:#b8362e; z-index:2"
+             data-detail="born here — the thread that runs through everything i care about, especially education">
+          <svg viewBox="0 0 200 200" role="img" aria-label="China, born here"><g filter="url(#inkRough)" fill="none" stroke="currentColor">
+            <circle cx="100" cy="100" r="94" stroke-width="4"/>
+            <circle cx="100" cy="100" r="85" stroke-width="1.4"/>
+            <circle cx="100" cy="100" r="55" stroke-width="2"/>
+            <path id="arcChina" d="M100,100 m-70,0 a70,70 0 1,1 140,0 a70,70 0 1,1 -140,0" stroke="none"/>
+            <text font-family="Josefin Sans, sans-serif" font-weight="700" font-size="13" letter-spacing="2" fill="currentColor" stroke="none"><textPath href="#arcChina" startOffset="0" textLength="432" lengthAdjust="spacing">IMMIGRATION · CHINA · ORIGIN ·</textPath></text>
+            <text x="100" y="97" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-weight="700" font-size="25" letter-spacing="2" fill="currentColor" stroke="none">CHINA</text>
+            <text x="100" y="118" text-anchor="middle" font-family="Courier Prime, monospace" font-weight="700" font-size="13" letter-spacing="3" fill="currentColor" stroke="none">★ BORN ★</text>
+          </g></svg>
         </div>
-        <div class="stamp stamp--hex rot-3" style="--c:var(--stampc-red)" data-detail="part of my education happened here, between the UK and the US">
-          <img class="stamp-icon-img" src="assets/london-icon.jpg" alt="">
-          <div class="stamp-title">UK</div>
+
+        <div class="ink-stamp" style="--w:178px; --x:49%; --y:7%; --rot:6deg; --ink:#2f4f9e; z-index:3"
+             data-detail="part of my education happened here, between the UK and the US">
+          <svg viewBox="0 0 220 132" role="img" aria-label="United Kingdom arrival"><g filter="url(#inkRough)" fill="none" stroke="currentColor">
+            <rect x="4" y="4" width="212" height="124" rx="8" stroke-width="4"/>
+            <rect x="12" y="12" width="196" height="108" rx="4" stroke-width="1.3"/>
+            <text x="110" y="36" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-weight="600" font-size="12.5" letter-spacing="3.2" fill="currentColor" stroke="none">UNITED KINGDOM</text>
+            <line x1="26" y1="46" x2="194" y2="46" stroke-width="1.3"/>
+            <text x="110" y="82" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-weight="700" font-size="34" letter-spacing="3" fill="currentColor" stroke="none">ARRIVAL</text>
+            <line x1="26" y1="92" x2="194" y2="92" stroke-width="1.3"/>
+            <text x="110" y="110" text-anchor="middle" font-family="Courier Prime, monospace" font-weight="700" font-size="12" letter-spacing="2" fill="currentColor" stroke="none">LONDON · SURREY</text>
+          </g></svg>
         </div>
-        <div class="stamp stamp--tri rot-2" style="--c:var(--stampc-green)" data-detail="Ed.M at Harvard — and where my first venture, an education startup, got its start">
-          <img class="stamp-icon-img" src="assets/boston-icon.jpg" alt="">
-          <div class="stamp-title">CAMBRIDGE, US</div>
-          <div class="stamp-sub">HARVARD ED.M</div>
+
+        <div class="ink-stamp" style="--w:176px; --x:27%; --y:27%; --rot:5deg; --ink:#c2185b; z-index:4"
+             data-detail="Ed.M at Harvard — and where my first venture, an education startup, got its start">
+          <svg viewBox="0 0 200 200" role="img" aria-label="Cambridge, Harvard Ed.M"><g filter="url(#inkRough)" fill="none" stroke="currentColor">
+            <polygon points="100,5 195,100 100,195 5,100" stroke-width="4"/>
+            <polygon points="100,16 184,100 100,184 16,100" stroke-width="1.3"/>
+            <text x="100" y="72" text-anchor="middle" font-family="Courier Prime, monospace" font-weight="700" font-size="11.5" letter-spacing="3" fill="currentColor" stroke="none">ARRIVAL</text>
+            <text x="100" y="101" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-weight="700" font-size="22" letter-spacing="1" fill="currentColor" stroke="none">CAMBRIDGE</text>
+            <line x1="52" y1="110" x2="148" y2="110" stroke-width="1.4"/>
+            <text x="100" y="130" text-anchor="middle" font-family="Courier Prime, monospace" font-weight="700" font-size="11.5" letter-spacing="2" fill="currentColor" stroke="none">HARVARD ED.M</text>
+          </g></svg>
         </div>
-        <div class="stamp stamp--rect rot-5" style="--c:var(--stampc-mustard)" data-detail="based here since diving deep into tech startups">
-          <img class="stamp-icon-img" src="assets/nyc-icon.jpg" alt="">
-          <div class="stamp-title">NEW YORK, NY</div>
-          <div class="stamp-sub">BASED HERE NOW</div>
+
+        <div class="ink-stamp" style="--w:184px; --x:3%; --y:47%; --rot:-5deg; --ink:#d2691e; z-index:3"
+             data-detail="based here since diving deep into tech startups">
+          <svg viewBox="0 0 220 132" role="img" aria-label="New York, based here now"><g filter="url(#inkRough)" fill="none" stroke="currentColor">
+            <rect x="4" y="4" width="212" height="124" rx="6" stroke-width="4"/>
+            <rect x="4" y="4" width="212" height="30" fill="currentColor" stroke="none" opacity=".95"/>
+            <text x="110" y="25" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-weight="700" font-size="14" letter-spacing="4" fill="#fff" stroke="none" style="mix-blend-mode:normal">U.S. · ADMITTED</text>
+            <text x="110" y="72" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-weight="700" font-size="21" letter-spacing=".6" fill="currentColor" stroke="none">NEW YORK, NY</text>
+            <line x1="22" y1="84" x2="198" y2="84" stroke-width="1.4"/>
+            <text x="110" y="109" text-anchor="middle" font-family="Courier Prime, monospace" font-weight="700" font-size="13" letter-spacing="3" fill="currentColor" stroke="none">BASED HERE NOW</text>
+          </g></svg>
         </div>
-        <div class="stamp stamp--circle rot-4" style="--c:var(--stampc-blue)" data-detail="the language i grew up thinking in">
-          <div class="stamp-icon">文</div>
-          <div class="stamp-title">MANDARIN</div>
-          <div class="stamp-sub">NATIVE</div>
+
+        <div class="ink-stamp" style="--w:196px; --x:44%; --y:50%; --rot:7deg; --ink:#1f6f78; z-index:4"
+             data-detail="the language i grew up thinking in">
+          <svg viewBox="0 0 220 140" role="img" aria-label="Mandarin, native"><g filter="url(#inkRough)" fill="none" stroke="currentColor">
+            <ellipse cx="110" cy="70" rx="105" ry="65" stroke-width="3.6" stroke-dasharray="9 5"/>
+            <ellipse cx="110" cy="70" rx="93" ry="53" stroke-width="1.3"/>
+            <text x="110" y="75" text-anchor="middle" font-family="serif" font-weight="700" font-size="44" fill="currentColor" stroke="none">文</text>
+            <text x="110" y="29" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-weight="700" font-size="13" letter-spacing="4" fill="currentColor" stroke="none">MANDARIN</text>
+            <text x="110" y="117" text-anchor="middle" font-family="Courier Prime, monospace" font-weight="700" font-size="13" letter-spacing="4" fill="currentColor" stroke="none">NATIVE</text>
+          </g></svg>
         </div>
-        <div class="stamp stamp--hex rot-1" style="--c:var(--stampc-green)" data-detail="still practicing — send me your favorite k-dramas">
-          <div class="stamp-icon">한</div>
-          <div class="stamp-title">KOREAN</div>
-          <div class="stamp-sub">LEARNING</div>
+
+        <div class="ink-stamp" style="--w:150px; --x:13%; --y:72%; --rot:-4deg; --ink:#3b7d4f; z-index:3"
+             data-detail="still practicing — send me your favorite k-dramas">
+          <svg viewBox="0 0 200 140" role="img" aria-label="Korean, learning"><g filter="url(#inkRough)" fill="none" stroke="currentColor">
+            <polygon points="52,5 148,5 195,70 148,135 52,135 5,70" stroke-width="3.8"/>
+            <polygon points="56,15 144,15 184,70 144,125 56,125 16,70" stroke-width="1.2"/>
+            <text x="100" y="64" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="34" fill="currentColor" stroke="none">한</text>
+            <text x="100" y="88" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-weight="700" font-size="14" letter-spacing="3" fill="currentColor" stroke="none">KOREAN</text>
+            <text x="100" y="106" text-anchor="middle" font-family="Courier Prime, monospace" font-weight="700" font-size="10.5" letter-spacing="3" fill="currentColor" stroke="none">LEARNING</text>
+          </g></svg>
         </div>
+
+        <div class="ink-stamp ink-stamp--static" aria-hidden="true" style="--w:196px; --x:46%; --y:79%; --rot:-13deg; --ink:#34609e; z-index:5">
+          <svg viewBox="0 0 240 84"><g filter="url(#inkRough)" fill="none" stroke="currentColor">
+            <rect x="4" y="4" width="232" height="76" rx="5" stroke-width="4.5"/>
+            <rect x="11" y="11" width="218" height="62" rx="2" stroke-width="1.3"/>
+            <text x="120" y="55" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-weight="700" font-size="38" letter-spacing="5" fill="currentColor" stroke="none">APPROVED</text>
+          </g></svg>
+        </div>
+
+        <div class="pp-page-num">2</div>
       </div>
+
       <div class="visa-page visa-page--passport-id">
-        <div class="passport-chip" aria-hidden="true"></div>
-        <div class="passport-id-title">Passport</div>
-        <div class="passport-id-head">
-          <div class="passport-id-photo"><img src="assets/life/photo-professional.jpg" alt="Bria Han"></div>
-          <div class="passport-field">
-            <div class="label">name</div>
-            <div class="passport-box">Bria Han</div>
+        <div class="pid-title">Bria's Passport</div>
+
+        <div class="pid-main">
+          <div class="pid-photo">
+            <img src="assets/life/photo-professional.jpg" alt="Bria Han">
+          </div>
+          <div class="pid-fields">
+            <div class="pid-field">
+              <div class="pid-label">Name</div>
+              <div class="pid-bar">BRIA HAN</div>
+            </div>
+            <div class="pid-field-row">
+              <div class="pid-field">
+                <div class="pid-label">Based in</div>
+                <div class="pid-bar">NEW YORK, NY</div>
+              </div>
+              <div class="pid-field">
+                <div class="pid-label">Experience</div>
+                <div class="pid-bar">4+ YRS · SINCE 2021</div>
+              </div>
+            </div>
+            <div class="pid-field">
+              <div class="pid-label">Field</div>
+              <div class="pid-bar pid-bar--hand">mysterious gorg girl in tech</div>
+            </div>
           </div>
         </div>
-        <div class="passport-field-row">
-          <div class="passport-field">
-            <div class="label">based in</div>
-            <div class="passport-box">New York, NY</div>
-          </div>
-          <div class="passport-field">
-            <div class="label">experience</div>
-            <div class="passport-box">4+ yrs · since 2021</div>
-          </div>
-        </div>
-        <div class="passport-field">
-          <div class="label">field</div>
-          <div class="passport-box">mysterious gorg girl in tech</div>
-        </div>
-        <div class="passport-field">
-          <div class="label">education</div>
-          <div class="passport-box passport-box--edu">
+
+        <div class="pid-field">
+          <div class="pid-label">Education</div>
+          <div class="pid-bar pid-bar--edu">
             <div class="edu-logos">
               <div class="edu-logo-item"><img src="assets/logos/harvard-word.png" alt="Harvard University"></div>
               <div class="edu-logo-item"><img src="assets/logos/surrey-word.png" alt="University of Surrey"></div>
             </div>
           </div>
         </div>
-        <div class="passport-field">
-          <div class="label">fun fact</div>
-          <div class="passport-box passport-box--fun">i'm a fun person and that is a fact :)</div>
+
+        <div class="pid-field">
+          <div class="pid-label">Fun fact</div>
+          <div class="pid-bar pid-bar--hand">i'm a fun person and that is a fact :)</div>
         </div>
-        <div class="passport-signature-row">
-          <div class="passport-property">property of<br><strong>bria.han</strong></div>
-          <div class="passport-signature">Bria Han</div>
+
+        <div class="pid-foot">
+          <div class="pid-property">PROPERTY OF<strong>bria.han</strong></div>
+          <div class="pid-sig">
+            <div class="pid-label">Signature</div>
+            <div class="pid-sig-script">Bria Han</div>
+          </div>
         </div>
-        <div class="passport-mrz">
-          P&lt;USA&lt;HAN&lt;&lt;BRIA&lt;&lt;&lt;BASED&lt;IN&lt;NEW&lt;YORK&lt;NY&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br>
-          GROWTH&lt;MARKETER&lt;&lt;4&lt;YRS&lt;EXPERIENCE&lt;&lt;SINCE&lt;2021&lt;&lt;&lt;&lt;&lt;
+
+        <div class="pid-mrz">
+          P&lt;USA&lt;HAN&lt;&lt;BRIA&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br>
+          GROWTH&lt;MARKETER&lt;&lt;NYC&lt;&lt;SINCE&lt;2021&lt;&lt;&lt;&lt;&lt;&lt;&lt;
         </div>
       </div>
     `;
@@ -343,7 +409,7 @@ function closeStampTip(){
   activeStamp = null;
 }
 function wireStampDetails(root){
-  const stamps = root.querySelectorAll('.stamp[data-detail]');
+  const stamps = root.querySelectorAll('.stamp[data-detail], .ink-stamp[data-detail]');
   if (!stamps.length || !window.gsap) return;
   stamps.forEach(stamp => {
     stamp.addEventListener('click', (e) => {
@@ -428,97 +494,115 @@ function renderStack(){
   });
 }
 
-function goTo(index, direction){
+const compactPassport = window.matchMedia('(max-width: 760px)');
+const reducePassportMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+function makePageFace(page, side, passport){
+  const face = page.cloneNode(true);
+  face.classList.add('turn-face', 'turn-face--' + side);
+  face.classList.toggle('turn-face--passport', Boolean(passport));
+  face.inert = true;
+  face.setAttribute('aria-hidden', 'true');
+
+  // Give copies their own IDs so their SVG text paths still resolve.
+  const ids = new Map();
+  face.querySelectorAll('[id]').forEach(element => {
+    const id = element.id;
+    element.id = `turn-${side}-${id}`;
+    ids.set('#' + id, '#' + element.id);
+  });
+  face.querySelectorAll('[href]').forEach(element => {
+    const href = element.getAttribute('href');
+    if (ids.has(href)) element.setAttribute('href', ids.get(href));
+  });
+  return face;
+}
+
+async function goTo(index, direction){
   if (animating || index < 0 || index >= ROLES.length || index === current) return;
-  const dir = direction || (index > current ? 'next' : 'prev');
-  const sign = dir === 'next' ? -1 : 1; // which way the page rotates
-  animating = true;
 
-  // only the right page actually turns — a real book's left page doesn't
-  // fly anywhere when you flip forward, it just sits there while the
-  // right page peels away from the spine. Clone just that half, sized
-  // and positioned to match its real box exactly, so its own left edge
-  // always IS the true spine (no more per-page-type origin math needed).
-  const isPassport = spreadEl.classList.contains('is-passport-page');
-  const oldRightPage = spreadEl.children[1];
-  const stageRect = stageEl.getBoundingClientRect();
-  const rightRect = oldRightPage.getBoundingClientRect();
-
-  const leaf = document.createElement('div');
-  leaf.className = 'flip-leaf passport-paper ' + oldRightPage.className;
-  if (isPassport) leaf.classList.add('is-passport-page');
-  // inline, not just the .flip-leaf class rule — some cloned content
-  // classes (.visa-page--passport-id) set their own `position: relative`
-  // for their own pseudo-elements, and since they're copied onto this
-  // same leaf, a same-specificity class-vs-class tie let that win and
-  // silently drop the leaf into normal document flow (visible as the old
-  // page flashing in below the book for the whole animation). An inline
-  // style always wins, so this can't happen no matter what content class
-  // ends up riding along.
-  leaf.style.position = 'absolute';
-  leaf.style.left = (rightRect.left - stageRect.left) + 'px';
-  leaf.style.top = (rightRect.top - stageRect.top) + 'px';
-  leaf.style.width = rightRect.width + 'px';
-  leaf.style.height = rightRect.height + 'px';
-  leaf.innerHTML = oldRightPage.innerHTML;
-  const leafBack = document.createElement('div');
-  leafBack.className = 'flip-leaf-back';
-  leaf.appendChild(leafBack);
-  const leafGlow = document.createElement('div');
-  leafGlow.className = 'flip-leaf-glow ' + (dir === 'next' ? 'flip-leaf-glow--next' : 'flip-leaf-glow--prev');
-  leaf.appendChild(leafGlow);
-  stageEl.appendChild(leaf);
-
-  // swap the real content underneath immediately — the left page updates
-  // in place since it was never part of the animation; the right page is
-  // simply covered by the turning leaf until it clears
-  current = index;
-  renderSpread();
-
-  const done = () => { leaf.remove(); animating = false; };
-  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (!window.gsap || reduceMotion){
-    done();
+  const showDestination = () => {
+    current = index;
+    renderSpread();
+  };
+  if (reducePassportMotion.matches || !spreadEl.animate){
+    showDestination();
     return;
   }
 
-  // a GSAP timeline driving the actual 3D rotation, instead of a CSS
-  // @keyframes triggered through a raw requestAnimationFrame — same visual
-  // idea (turn on the spine, shadow builds then eases off, a highlight
-  // sweeps across it) but timed against real animation progress, plus a
-  // page that visibly isn't rigid: it bows (skewY) and narrows slightly
-  // as it turns edge-on (scaleX), both peaking exactly at the midpoint
-  gsap.timeline({ onComplete: done })
-    .set(leaf, { transformPerspective: 2000, force3D: true })
-    .to(leaf, {
-      rotationY: sign * 178,
-      duration: 0.62,
-      ease: 'power2.inOut',
-      onUpdate(){
-        const bow = Math.sin(this.progress() * Math.PI); // 0 → 1 → 0
-        gsap.set(leaf, {
-          skewY: sign * -bow * 2.2,
-          scaleX: 1 - bow * 0.035
-        });
+  animating = true;
+  closeStampTip();
+  stageEl.classList.add('is-turning');
+  const overlays = [];
+
+  try {
+    if (compactPassport.matches){
+      const fadeOut = spreadEl.animate([{ opacity: 1 }, { opacity: 0 }], {
+        duration: 120, fill: 'forwards'
+      });
+      try {
+        await fadeOut.finished;
+        showDestination();
+      } finally {
+        fadeOut.cancel();
       }
-    }, 0)
-    .to(leaf, {
-      boxShadow: `${sign < 0 ? '-20px' : '20px'} 20px 50px rgba(0,0,0,0.3)`,
-      duration: 0.28,
-      ease: 'power1.in'
-    }, 0)
-    .to(leaf, {
-      boxShadow: '0 30px 60px rgba(0,0,0,0.16)',
-      duration: 0.34,
-      ease: 'power1.out'
-    }, 0.28)
-    .fromTo(leafGlow,
-      { backgroundPositionX: '120%', opacity: 0 },
-      { backgroundPositionX: '-60%', opacity: 1, duration: 0.34, ease: 'power1.in' },
-      0
-    )
-    .to(leafGlow, { opacity: 0, duration: 0.28, ease: 'power1.out' }, 0.34);
+      await spreadEl.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 180 }).finished;
+      return;
+    }
+
+    const forward = direction ? direction === 'next' : index > current;
+    const movingSide = forward ? 1 : 0;
+    const restingSide = 1 - movingSide;
+    const oldPage = spreadEl.children[movingSide];
+    const destination = document.createElement('div');
+    destination.innerHTML = spreadHTML(ROLES[index]);
+
+    const front = makePageFace(oldPage, 'front', ROLES[current].isPassportBio);
+    const back = makePageFace(destination.children[restingSide], 'back', ROLES[index].isPassportBio);
+    const revealed = makePageFace(destination.children[movingSide], 'revealed', ROLES[index].isPassportBio);
+    const sheet = document.createElement('div');
+    sheet.className = 'turn-sheet';
+    sheet.style.transformOrigin = forward ? 'left center' : 'right center';
+    sheet.append(front, back);
+
+    const stageBounds = stageEl.getBoundingClientRect();
+    const pageBounds = oldPage.getBoundingClientRect();
+    for (const layer of [sheet, revealed]){
+      Object.assign(layer.style, {
+        left: `${pageBounds.left - stageBounds.left}px`,
+        top: `${pageBounds.top - stageBounds.top}px`,
+        width: `${pageBounds.width}px`,
+        height: `${pageBounds.height}px`
+      });
+    }
+
+    overlays.push(revealed, sheet);
+    stageEl.append(...overlays);
+    front.scrollTop = oldPage.scrollTop;
+
+    const angle = forward ? -1 : 1;
+    const turn = sheet.animate([
+      { transform: 'rotateY(0deg)' },
+      { transform: `rotateY(${angle * 90}deg) skewY(${angle * -2}deg)`, offset: .52 },
+      { transform: `rotateY(${angle * 180}deg)` }
+    ], { duration: 650, easing: 'cubic-bezier(.42, 0, .25, 1)', fill: 'forwards' });
+
+    for (const face of [front, back]){
+      const shade = document.createElement('span');
+      shade.className = 'turn-shade';
+      face.append(shade);
+      shade.animate([{ opacity: 0 }, { opacity: .27 }, { opacity: 0 }], { duration: 650 });
+    }
+
+    await turn.finished;
+    showDestination();
+  } catch (error) {
+    if (error.name !== 'AbortError') throw error;
+  } finally {
+    overlays.forEach(layer => layer.remove());
+    stageEl.classList.remove('is-turning');
+    animating = false;
+  }
 }
 
 prevBtn.addEventListener('click', () => goTo(current - 1, 'prev'));
@@ -528,25 +612,19 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft') goTo(current - 1, 'prev');
 });
 
-// ---- tactile hover: the page tilts toward the cursor like a real passport ----
+// Show resize cursors at the fore-edges without moving the book.
 const EDGE_ZONE = 0.14; // outer 14% of the spread reads as a "grab the corner" zone
 
 stageEl.addEventListener('mousemove', (e) => {
   if (animating) return;
   const rect = stageEl.getBoundingClientRect();
   const px = (e.clientX - rect.left) / rect.width;   // 0 (left) → 1 (right)
-  const py = (e.clientY - rect.top) / rect.height;    // 0 (top) → 1 (bottom)
-  const rotY = (px - 0.5) * 10;   // subtle left/right tilt
-  const rotX = (0.5 - py) * 4;    // subtle up/down tilt
-  spreadEl.style.transform = `perspective(2000px) rotateY(${rotY}deg) rotateX(${rotX}deg)`;
-
   const nearLeft = px < EDGE_ZONE && current > 0;
   const nearRight = px > 1 - EDGE_ZONE && current < ROLES.length - 1;
   stageEl.classList.toggle('at-left-edge', nearLeft);
   stageEl.classList.toggle('at-right-edge', nearRight);
 });
 stageEl.addEventListener('mouseleave', () => {
-  spreadEl.style.transform = '';
   stageEl.classList.remove('at-left-edge', 'at-right-edge');
 });
 stageEl.addEventListener('click', (e) => {

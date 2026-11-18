@@ -54,7 +54,7 @@
 .visa-arrow:hover{ background: var(--ink); color: var(--paper); }
 .visa-arrow:disabled{ opacity: .3; pointer-events:none; }
 
-/* the stage establishes the 3D space; spread + flip-leaf are stacked inside it */
+/* the stage establishes the 3D space; spread and turning sheet are stacked inside it */
 .book-stage{
   flex: 1;
   position: relative;
@@ -62,47 +62,32 @@
   perspective: 2000px;
 }
 
-/* the rest of the book — pages you've already read (left) and pages still
-   to come (right), each just barely peeking out from behind the open
-   spread, fanned back into the distance. Click one to jump straight to it. */
+/* Thin fore-edges share the paper stock used by the live and turning pages. */
 .book-stack{
   position: absolute;
-  top: 3%;
-  bottom: 3%;
-  width: 70px;
-  transform-style: preserve-3d;
+  top: 5px;
+  bottom: 5px;
+  width: 12px;
   pointer-events: none;
 }
-.book-stack--right{ right: -16px; }
-.book-stack--left{ left: -16px; }
+.book-stack--left{ left: -3px; }
+.book-stack--right{ right: -3px; }
 .book-stack-page{
   position: absolute;
   inset: 0;
-  border-radius: var(--radius-md);
-  background:
-    repeating-linear-gradient(180deg, rgba(0,0,0,0.06) 0 2px, transparent 2px 6px),
-    var(--paper-card);
-  /* real page-cut edges catch light along the top and sit in shadow along
-     the bottom — without this each sliver reads as a flat swatch, not a
-     stack of actual paper with thickness */
-  box-shadow:
-    0 16px 32px rgba(0,0,0,0.16),
-    inset 0 1px 0 rgba(255,255,255,0.8),
-    inset 0 -3px 4px -2px rgba(0,0,0,0.18);
+  border: 1px solid #aebdca;
+  border-radius: 8px;
+  background: #dfe9f0;
+  box-shadow: 0 2px 3px #24344312;
   pointer-events: auto;
   cursor: pointer;
-  transition: transform .3s ease;
 }
 .book-stack--right .book-stack-page{
-  border-left: 5px solid var(--c, var(--line));
-  transform: translateX(calc(var(--i) * 17px)) translateZ(calc(var(--i) * -30px)) rotateY(-9deg);
+  transform: translateX(calc(var(--i) * 2px)) translateY(calc(var(--i) * 1px));
 }
 .book-stack--left .book-stack-page{
-  border-right: 5px solid var(--c, var(--line));
-  transform: translateX(calc(var(--i) * -17px)) translateZ(calc(var(--i) * -30px)) rotateY(9deg);
+  transform: translateX(calc(var(--i) * -2px)) translateY(calc(var(--i) * 1px));
 }
-.book-stack--right .book-stack-page:hover{ transform: translateX(calc(var(--i) * 17px + 6px)) translateZ(calc(var(--i) * -30px)) rotateY(-13deg); }
-.book-stack--left .book-stack-page:hover{ transform: translateX(calc(var(--i) * -17px - 6px)) translateZ(calc(var(--i) * -30px)) rotateY(13deg); }
 @media (max-width: 760px){
   .book-stack{ display: none; }
 }
@@ -110,7 +95,7 @@
 .visa-spread{
   position: relative;
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   /* every real page in a book is the same physical size regardless of how
      much is printed on it — a fixed height (not min-height) is what makes
      that true here too. 600px comfortably fits the busiest page (the
@@ -124,8 +109,6 @@
   border-radius: var(--radius-md);
   box-shadow: 0 30px 60px rgba(0,0,0,0.16);
   overflow: hidden;
-  transition: transform .18s ease-out;
-  will-change: transform;
 }
 .visa-page--detail,
 .visa-page--skills,
@@ -135,17 +118,6 @@
      silently growing the whole book again */
   max-height: 600px;
   overflow-y: auto;
-}
-/* the fore-edge — a sliver of many thin bound pages, the detail that
-   sells "this is one page of a whole book," not a single flat card */
-.visa-spread::after,
-.flip-leaf::after{
-  content: '';
-  position: absolute;
-  right: 0; top: 0; bottom: 0;
-  width: 6px;
-  background: repeating-linear-gradient(180deg, rgba(120,100,70,0.2) 0 1.5px, rgba(250,245,235,0.95) 1.5px 3px);
-  pointer-events: none;
 }
 /* the spine — a real open book isn't flat; the paper bows away from the
    binding, so the gutter reads as a soft valley, darkest right at the
@@ -158,15 +130,6 @@
   z-index: 6;
   pointer-events: none;
   background: linear-gradient(90deg,
-    transparent calc(45.45% - 70px),
-    rgba(30,20,10,0.09) calc(45.45% - 14px),
-    rgba(30,20,10,0.16) 45.45%,
-    rgba(30,20,10,0.09) calc(45.45% + 14px),
-    transparent calc(45.45% + 70px)
-  );
-}
-.visa-spread.is-passport-page::before{
-  background: linear-gradient(90deg,
     transparent calc(50% - 70px),
     rgba(30,20,10,0.09) calc(50% - 14px),
     rgba(30,20,10,0.16) 50%,
@@ -178,70 +141,26 @@
 .book-stage.at-left-edge{ cursor: w-resize; }
 .book-stage.at-right-edge{ cursor: e-resize; }
 
-/* the flipping leaf is now only the RIGHT page — a real book's left page
-   never moves when you turn forward, so the left page just sits there
-   and its content updates underneath while only the right one turns.
-   Size/position are set inline in JS to match the real right page's rect
-   exactly; the leaf's own left edge is therefore always the true spine,
-   so it can pivot at a flat 0% with no per-page-type origin math needed. */
-.flip-leaf{
-  position: absolute;
-  z-index: 15;
-  transform-origin: 0% center;
-  transform-style: preserve-3d;
-  backface-visibility: hidden;
-  pointer-events: none;
-  will-change: transform, box-shadow;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.16);
-  background: var(--paper-card);
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+/* The leaf and its paper faces occupy the same boxes as the live spread. */
+.turn-sheet, .visa-page.turn-face{ position: absolute; pointer-events: none; }
+.turn-sheet{ z-index: 15; transform-style: preserve-3d; }
+.visa-page.turn-face{
+  inset: 0;
   overflow: hidden;
-}
-.flip-leaf.is-passport-page{
-  background-color: color-mix(in srgb, var(--stampc-pink) 14%, var(--paper-card));
-}
-/* the turning page's own shadow near its hinge — one-sided, since the
-   rest of the gutter valley stays with the static left page below it */
-.flip-leaf::before{
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 6;
-  pointer-events: none;
-  background: linear-gradient(90deg, rgba(30,20,10,0.18) 0, rgba(30,20,10,0.08) 40px, transparent 100px);
-}
-/* a soft shading overlay GSAP fades in/out over the course of the flip —
-   the "light catching the paper as it curls" cue, timed against the actual
-   rotation progress rather than a fixed-duration CSS keyframe. A real
-   element (not ::after) since GSAP can't animate pseudo-elements directly. */
-.flip-leaf-glow{
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0;
-  background-size: 260% 100%;
-  background-repeat: no-repeat;
-}
-.flip-leaf-glow--next{
-  background-image: linear-gradient(90deg, transparent 30%, rgba(20,12,5,0.42) 46%, rgba(255,255,255,0.32) 54%, transparent 70%);
-  background-position: 100% 0;
-}
-.flip-leaf-glow--prev{
-  background-image: linear-gradient(270deg, transparent 30%, rgba(20,12,5,0.42) 46%, rgba(255,255,255,0.32) 54%, transparent 70%);
-  background-position: 100% 0;
-}
-/* the blank back of the page — pre-rotated 180°, so it only becomes visible
-   once the leaf has turned past vertical, instead of the page just vanishing
-   mid-flip (backface-visibility:hidden on the front content above) */
-.flip-leaf-back{
-  position: absolute;
-  inset: 0;
-  background: var(--paper-card);
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
-  box-shadow: inset 0 0 0 1px var(--line);
   backface-visibility: hidden;
-  transform: rotateY(180deg);
+  background: var(--paper-card);
 }
+.turn-face--back{ transform: rotateY(180deg); }
+.visa-page.turn-face--revealed{ inset: auto; z-index: 14; }
+
+.turn-shade{
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #382b20, transparent 75%);
+  opacity: 0;
+  z-index: 5;
+}
+.is-turning .visa-spread{ pointer-events: none; }
 
 .visa-page{ padding: 32px 30px; }
 .visa-page--stamp{
@@ -262,147 +181,123 @@
 .visa-page--stamp .visa-dates{ font-family: var(--font-mono); font-size: 13px; color: var(--ink-soft); }
 .visa-page--stamp .visa-company{ font-family: var(--font-display); font-weight:700; font-size: 22px; }
 
-/* ---------- page 1: the passport bio-data spread, pink paper ---------- */
+/* ---------- page 1: the passport bio-data spread ----------
+   Modelled on a real booklet: pale blue-grey stock printed with a
+   guilloche security lattice, rubber-stamp visas inked straight onto the
+   page, and flat printed data fields (no form-input chrome). */
 .visa-spread.is-passport-page{
-  background-color: color-mix(in srgb, var(--stampc-pink) 14%, var(--paper-card));
-  /* a real passport's two facing leaves are the same physical size — the
-     1fr/1.2fr split elsewhere is tuned for text-heavy role pages, not this one */
-  grid-template-columns: 1fr 1fr;
+  --pp-ink: #232b36;
+  border-color: #aebdca;
 }
+
 .visa-page--passport-stamps{
-  border-right: 2px dashed var(--line);
-  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
-  gap: 18px 22px;
+  position: relative;
+  padding: 0;
+  border-right: 0;
+  overflow: hidden;
 }
-.visa-page--passport-stamps .stamp{ width: 132px; height: 128px; }
+.pp-page-head{
+  position: absolute; top: 16px; left: 0; right: 0;
+  display: flex; justify-content: center; gap: 14px;
+  font-family: 'Josefin Sans', sans-serif; font-weight: 600;
+  font-size: 11px; letter-spacing: .42em;
+  color: rgba(35,43,54,.55);
+}
+.pp-page-num{
+  position: absolute; bottom: 14px; left: 0; right: 0; text-align: center;
+  font-family: 'Josefin Sans', sans-serif; font-weight: 600; font-size: 12px;
+  letter-spacing: .2em; color: rgba(35,43,54,.5);
+}
+
+/* rubber-stamp visas — absolutely scattered and overlapping like the real
+   thing; multiply blending lets the lattice and neighbouring inks show through */
+.ink-stamp{
+  position: absolute;
+  left: var(--x); top: var(--y);
+  width: var(--w);
+  color: var(--ink);
+  transform: rotate(var(--rot, 0deg));
+  mix-blend-mode: multiply;
+  opacity: 1;
+  cursor: pointer;
+  transition: opacity .2s ease;
+}
+.ink-stamp svg{ display: block; width: 100%; height: auto; overflow: visible; }
+.ink-stamp:hover{ opacity: 1; }
+.ink-stamp--static{ pointer-events: none; cursor: default; }
 
 .visa-page--passport-id{
   position: relative;
   display: flex;
   flex-direction: column;
-  padding-top: 24px;
-  padding-bottom: 20px;
+  padding: 30px 32px 20px;
   overflow: hidden;
-  isolation: isolate;
+  font-family: 'Josefin Sans', sans-serif;
 }
-/* fine security-print dot pattern — the "this is an official document" cue */
-.visa-page--passport-id::before{
-  content: '';
-  position: absolute;
-  inset: 14px;
-  border: 1px solid color-mix(in srgb, var(--stampc-pink) 45%, var(--ink));
-  outline: 1px solid color-mix(in srgb, var(--stampc-pink) 25%, var(--ink));
-  outline-offset: 4px;
-  background-image: radial-gradient(color-mix(in srgb, var(--stampc-pink) 35%, var(--ink)) .5px, transparent .5px);
-  background-size: 8px 8px;
-  background-position: -4px -4px;
-  opacity: .5;
-  pointer-events: none;
-  z-index: -1;
-}
-/* a laminate sheen sweeping across the page, like light catching plastic */
-.visa-page--passport-id::after{
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,0.55) 50%, transparent 60%);
-  pointer-events: none;
-  z-index: -1;
-}
-.passport-chip{
-  position: absolute;
-  top: 30px; right: 30px;
-  width: 34px; height: 26px;
-  border-radius: 4px;
-  background: linear-gradient(135deg, #ecd394 0%, #c9a45f 100%);
-  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.15);
-}
-.passport-chip::before{
-  content: '';
-  position: absolute;
-  inset: 5px;
-  border: 1px solid rgba(0,0,0,0.2);
-  border-radius: 2px;
-  background-image:
-    linear-gradient(rgba(0,0,0,0.15) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,0,0,0.15) 1px, transparent 1px);
-  background-size: 6px 6px;
-}
-.passport-id-title{
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 24px;
-  letter-spacing: .03em;
+.pid-title{
+  align-self: flex-start;
+  font-family: 'Permanent Marker', var(--font-display), cursive;
+  font-size: 31px;
+  line-height: 1.05;
+  letter-spacing: .01em;
   text-transform: uppercase;
-  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
-  border-bottom: 2px solid var(--ink);
-  display: inline-block;
-  padding-bottom: 3px;
-  margin-bottom: 12px;
+  color: var(--pp-ink, #232b36);
+  border-bottom: 3px solid var(--pp-ink, #232b36);
+  padding-bottom: 4px;
+  margin-bottom: 20px;
 }
-.passport-id-head{ display: flex; gap: 16px; align-items: flex-start; margin-bottom: 10px; }
-.passport-id-head .passport-field{ flex: 1; margin-bottom: 0; align-self: flex-end; }
-.passport-id-photo{
+.pid-main{ display: flex; gap: 18px; align-items: stretch; margin-bottom: 14px; }
+.pid-photo{
   flex: none;
-  width: 100px; height: 120px;
-  border-radius: 4px;
-  border: 2px solid var(--ink);
-  box-shadow: 0 3px 8px rgba(0,0,0,0.18);
-  overflow: hidden;
-}
-.passport-id-photo img{ width: 100%; height: 100%; object-fit: cover; }
-.passport-mrz{
-  margin-top: auto;
-  padding-top: 10px;
-  border-top: 1px dashed color-mix(in srgb, var(--stampc-pink) 40%, var(--ink));
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: .1em;
-  color: var(--ink-soft);
-  line-height: 1.5;
-  word-break: break-all;
-}
-.passport-field{ margin-bottom: 9px; }
-.passport-field .label{ margin-bottom: 3px; }
-.passport-box{
+  width: 128px;
+  align-self: flex-start;
+  padding: 3px;
   background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  padding: 6px 10px;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  color: var(--ink);
+  border: 1px solid #3b4656;
 }
-/* the one field that isn't official — a little personality snuck onto
-   an otherwise deadpan document, in the same handwriting used elsewhere
-   on the site for anything personal rather than administrative */
-.passport-box--fun{
+.pid-photo img{ display: block; width: 100%; height: 162px; object-fit: cover; object-position: center top; }
+.pid-fields{ flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; }
+.pid-field{ margin-bottom: 9px; }
+.pid-fields .pid-field:last-child{ margin-bottom: 0; }
+.pid-field-row{ display: flex; gap: 10px; margin-bottom: 9px; }
+.pid-field-row .pid-field{ flex: 1; min-width: 0; margin-bottom: 0; }
+.pid-label{
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--pp-ink, #232b36);
+  margin-bottom: 2px;
+}
+/* values are printed on a plain white strip, like the reference booklet */
+.pid-bar{
+  background: rgba(255,255,255,.93);
+  padding: 4px 9px;
+  font-weight: 400;
+  font-size: 13.5px;
+  letter-spacing: .09em;
+  line-height: 1.35;
+  color: var(--pp-ink, #232b36);
+}
+.pid-field-row .pid-bar{ font-size: 11.5px; letter-spacing: .05em; padding: 4px 7px; }
+/* the two lines that aren't official data are "filled in by hand", ballpoint-blue */
+.pid-bar--hand{
   font-family: var(--font-hand);
-  font-size: 17px;
-  color: var(--stampc-pink);
+  font-size: 18px;
+  letter-spacing: .01em;
+  line-height: 1.2;
+  color: #28418f;
+  padding-top: 3px; padding-bottom: 3px;
 }
-.passport-field-row{ display: flex; gap: 12px; }
-.passport-field-row .passport-field{ flex: 1; margin-bottom: 9px; }
-.passport-box--edu{ padding: 6px 10px; }
-.edu-logos{ display: flex; gap: 12px; margin-top: 4px; flex-wrap: wrap; align-items: center; }
+.pid-bar--edu{ padding: 5px 8px; }
+.edu-logos{ display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
 .edu-logo-item{
   position: relative;
-  height: 40px;
-  border-radius: 6px;
-  background: #fff;
-  border: 1px solid var(--line);
+  height: 32px;
   display: flex; align-items: center; justify-content: center;
-  padding: 6px 12px;
   cursor: default;
 }
-.edu-logo-item img{ height: 100%; width: auto; max-width: 140px; object-fit: contain; display: block; }
-.edu-text-logo{
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 14px;
-  letter-spacing: .02em;
-  white-space: nowrap;
-}
+.edu-logo-item img{ height: 100%; width: auto; max-width: 130px; object-fit: contain; display: block; }
 .edu-degree{
   position: absolute;
   bottom: 120%;
@@ -420,33 +315,58 @@
   transition: opacity .2s ease, transform .2s ease;
   z-index: 5;
 }
-.edu-logo-item:hover .edu-degree{
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-.passport-signature-row{
-  margin-top: 10px;
+.edu-logo-item:hover .edu-degree{ opacity: 1; transform: translateX(-50%) translateY(0); }
+
+.pid-foot{
+  margin-top: auto;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   gap: 16px;
+  padding-bottom: 10px;
 }
-.passport-property{
+.pid-property{
+  font-weight: 600;
+  font-size: 9.5px;
+  letter-spacing: .14em;
+  color: rgba(35,43,54,.7);
+  line-height: 1.3;
+}
+.pid-property strong{
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 17px;
+  letter-spacing: -.01em;
+  text-transform: none;
+  color: var(--pp-ink, #232b36);
+}
+.pid-sig{ text-align: right; }
+.pid-sig .pid-label{ margin-bottom: 6px; }
+.pid-sig-script{
+  font-family: 'Mrs Saint Delafield', 'Caveat', cursive;
+  font-size: 40px;
+  line-height: .9;
+  color: #151a24;
+  transform: rotate(-3deg);
+  transform-origin: right bottom;
+  padding-right: 4px;
+}
+/* machine-readable zone, printed on a white strip across the foot */
+.pid-mrz{
+  margin: 0 -8px;
+  padding: 6px 8px;
+  background: rgba(255,255,255,.9);
   font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--muted);
-  line-height: 1.4;
-}
-.passport-property strong{ color: var(--ink); font-family: var(--font-display); }
-.passport-signature{
-  font-family: var(--font-hand);
-  font-size: 26px;
-  color: var(--ink);
-  border-bottom: 1px solid var(--ink);
-  padding-bottom: 2px;
+  font-size: 11px;
+  letter-spacing: .06em;
+  line-height: 1.45;
+  color: #1a2029;
+  white-space: nowrap;
+  overflow: hidden;
 }
 @media (max-width: 760px){
-  .visa-page--passport-stamps{ border-right: none; border-bottom: 2px dashed var(--line); }
+  .visa-page--passport-stamps{ min-height: 600px; }
 }
 
 .visa-page--detail .label{ margin-bottom: 4px; }
@@ -488,7 +408,9 @@
 }
 
 @media (max-width: 760px){
-  .visa-spread, .flip-leaf{ grid-template-columns: 1fr; }
+  .visa-spread{ grid-template-columns: minmax(0, 1fr); height: auto; }
+  .visa-spread::before{ display: none; }
+  .visa-page--detail, .visa-page--skills, .visa-page--passport-id{ max-height: none; }
   .visa-page--stamp{ border-right:none; border-bottom: 2px dashed var(--line); padding: 26px 24px; }
   .visa-book{ gap: 8px; }
   .visa-arrow{ width: 36px; height:36px; }
@@ -516,3 +438,165 @@
   font-family: var(--font-mono); font-size: 11px; color: var(--ink);
   border: 1.5px solid var(--ink); border-radius: 5px; padding: 5px 11px;
 }
+
+/* Shared printed treatment for the role and toolkit leaves. */
+.book-stage{
+  --passport-type: 'Josefin Sans', sans-serif;
+  --passport-ink: #232b36;
+  --passport-rule: #7b91a64d;
+  --passport-stock:
+    repeating-linear-gradient(60deg, #466e9607 0 1px, transparent 1px 17px),
+    repeating-linear-gradient(-60deg, #466e9607 0 1px, transparent 1px 17px),
+    linear-gradient(115deg, #f1f5f7, #e3ebf0);
+}
+.visa-page.visa-page--stamp,
+.visa-page.visa-page--detail,
+.visa-page.visa-page--skills{
+  min-width: 0;
+  font-family: var(--passport-type);
+  color: var(--passport-ink);
+  background: var(--passport-stock);
+}
+.visa-page--stamp{
+  border-right: 1px solid var(--passport-rule);
+  gap: 14px;
+}
+.visa-page--detail::before,
+.visa-page--skills::before{
+  display: block;
+  color: #596d7e;
+  font: 600 10px/1.3 var(--passport-type);
+  letter-spacing: .24em;
+  text-transform: uppercase;
+}
+.visa-page--detail::before{ content: 'Employment record'; margin-bottom: 26px; }
+.visa-page--skills::before{ content: 'Skills & qualifications'; margin-bottom: 4px; }
+.visa-page--stamp .visa-company{
+  max-width: 100%;
+  font: 600 25px/1.2 var(--passport-type);
+}
+.visa-page--stamp .visa-dates{
+  max-width: 100%;
+  font: 400 11px/1.6 var(--font-mono);
+  color: #45596a;
+}
+.visa-page--stamp .stamp{
+  width: min(190px, 100%);
+  min-height: 170px;
+  height: auto;
+  padding: 20px 15px;
+  flex-shrink: 0;
+  background: transparent;
+  box-shadow: none;
+  mix-blend-mode: multiply;
+}
+.visa-page--stamp .stamp-title{
+  font-family: var(--passport-type);
+  font-size: 16px;
+  line-height: 1.25;
+}
+.visa-page--detail .label,
+.visa-page--skills .label,
+.case-block .label{
+  font: 600 10px/1.4 var(--passport-type);
+  letter-spacing: .12em;
+  color: #506579;
+}
+.visa-page--detail .visa-role{
+  font: 600 25px/1.16 var(--passport-type);
+  margin: 6px 0 10px;
+}
+.visa-sub-purpose{
+  font: 400 14px/1.5 var(--passport-type);
+  color: #4a6071;
+  margin-bottom: 22px;
+}
+.visa-endorsements{ gap: 0; }
+.visa-endorsements li{
+  padding: 10px 0 10px 17px;
+  border-bottom: 1px solid #7b91a62b;
+  font: 400 15px/1.5 var(--passport-type);
+  color: var(--passport-ink);
+}
+.visa-endorsements li::before{
+  content: '·';
+  top: 10px;
+  color: #506579;
+}
+.case-toggle{
+  border: 0;
+  border-bottom: 1px solid #506579;
+  border-radius: 0;
+  padding: 5px 0;
+  background: transparent;
+  color: var(--passport-ink);
+  font: 600 13px/1.4 var(--passport-type);
+}
+.case-toggle:hover{ background: transparent; color: #28418f; }
+.case-study.open{ max-height: none; }
+.case-study-inner{ border-top: 1px solid var(--passport-rule); }
+.case-block p{
+  font: 400 15px/1.55 var(--passport-type);
+  color: var(--passport-ink);
+}
+.skills-row{
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--passport-rule);
+}
+.skills-row .sk-label{
+  width: 83px;
+  padding: 2px 0;
+  background: transparent !important;
+  color: #344e64;
+  text-align: left;
+  font: 600 11px/1.5 var(--passport-type);
+  letter-spacing: .02em;
+}
+.skills-row .sk-tags{ display: block; }
+.skills-row .sk-tags span{
+  display: inline;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--passport-ink);
+  font: 400 14px/1.55 var(--passport-type);
+}
+.skills-row .sk-tags span + span::before{ content: ' · '; color: #647a8d; }
+.skills-tools{ gap: 0; }
+.skills-tools span{
+  padding: 5px 10px 5px 0;
+  border: 0;
+  border-radius: 0;
+  color: #344e64;
+  font: 400 13px/1.4 var(--passport-type);
+}
+@media (max-width: 760px){
+  .visa-page--stamp{ min-height: 320px; border-right: 0; border-bottom: 1px solid var(--passport-rule); }
+  .visa-page--detail, .visa-page--skills{ padding: 28px 22px; }
+  .skills-row{ flex-direction: column; gap: 5px; }
+  .skills-row .sk-label{ width: auto; }
+}
+
+/* Identical paper on each physical leaf, including animation copies. */
+.book-stage{
+  --passport-paper:
+    repeating-linear-gradient(60deg, #466e9609 0 1px, transparent 1px 17px),
+    repeating-linear-gradient(-60deg, #466e9609 0 1px, transparent 1px 17px);
+}
+.visa-spread{
+  background: #e4edf3;
+  border-color: #aebdca;
+  isolation: isolate;
+}
+.visa-spread > .visa-page,
+.visa-page.turn-face{
+  --pp-ink: #232b36;
+  background-color: #e4edf3;
+  background-image: var(--passport-paper);
+  background-position: center;
+  color: #232b36;
+}
+.visa-page.turn-face--back,
+.visa-page.turn-face--revealed{ background-color: #e4edf3; }

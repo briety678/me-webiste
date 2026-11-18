@@ -24,6 +24,7 @@
   position: relative;
   max-width: 720px;
   margin: 0 auto 20px;
+  filter: drop-shadow(1px 3px 2px #493a2520) drop-shadow(3px 9px 9px #493a2520);
   perspective: 1600px; /* so the mouse-tilt below reads as a tiny 3D nudge */
 }
 .letter-page{
@@ -31,14 +32,14 @@
   --letter-ink-soft: #6b4f5a;
   position: relative;
   z-index: 1;
-  background-color: #fbedf0;
+  background-color: #f5dce5;
   background-image:
-    repeating-linear-gradient(to bottom, transparent, transparent 27px, rgba(214,120,150,0.18) 28px),
-    radial-gradient(ellipse 70% 55% at 26% 16%, rgba(255,250,251,0.7), transparent 62%),
-    radial-gradient(ellipse 60% 50% at 82% 90%, rgba(232,190,203,0.35), transparent 65%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
-  background-repeat: repeat, no-repeat, no-repeat, repeat;
-  background-size: auto, auto, auto, 160px 160px;
+    radial-gradient(ellipse at 20% 15%, #ffffff70, transparent 60%),
+    radial-gradient(ellipse at 82% 85%, #b8a68b16, transparent 65%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='fibres'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.12 .65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeDiffuseLighting lighting-color='%23ffffff' surfaceScale='2' diffuseConstant='.8'%3E%3CfeDistantLight azimuth='225' elevation='48'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23fibres)' opacity='.27'/%3E%3C/svg%3E");
+  background-repeat: no-repeat, no-repeat, repeat;
+  background-size: auto, auto, 180px 180px;
+  background-blend-mode: normal, multiply, multiply;
   /* a barely-imperfect silhouette, not a perfect CSS rectangle */
   clip-path: polygon(
     0.5% 0.2%, 12% 0%, 25% 0.5%, 40% 0%, 55% 0.4%, 70% 0%, 85% 0.5%, 99% 0%, 100% 0.6%,
@@ -47,35 +48,13 @@
     0% 85%, 0.4% 70%, 0% 55%, 0.3% 40%, 0% 25%, 0.4% 10%, 0% 0.2%
   );
   padding: 58px 60px 52px 72px;
-  box-shadow:
-    0 1px 1px rgba(60,45,25,0.28),
-    0 10px 20px rgba(60,45,25,0.14),
-    0 34px 60px rgba(40,30,15,0.20),
-    inset 0 0 26px rgba(90,70,40,0.05);
+  box-shadow: inset 0 0 24px #a5916e10;
   transform: rotate(1.2deg) rotateX(var(--letter-tilt-y, 0deg)) rotateY(var(--letter-tilt-x, 0deg));
   transition: transform .5s cubic-bezier(.2,.7,.25,1);
 }
 /* the margin rule down the left side, like real notebook paper */
-.letter-page::before{
-  content: '';
-  position: absolute;
-  left: 46px; top: 4%; bottom: 4%;
-  width: 1px;
-  background: rgba(214,90,130,0.4);
-}
-/* ring-binder punch holes running the length of the page, each with a
-   hint of an inner rim so they read as cut, not painted on */
-.letter-page::after{
-  content: '';
-  position: absolute;
-  left: 19px; top: 5%; bottom: 5%;
-  width: 14px;
-  background-image:
-    radial-gradient(circle at 38% 32%, rgba(255,255,255,0.7), transparent 55%),
-    radial-gradient(circle, rgba(0,0,0,0.26) 0, rgba(0,0,0,0.26) 5.5px, rgba(0,0,0,0.07) 6px, transparent 7px);
-  background-size: 100% 68px, 100% 68px;
-  background-repeat: repeat-y, repeat-y;
-}
+.letter-page::before,
+.letter-page::after{ content: none; }
 /* a whisper of a lifted corner, bottom-right — not a fold, just a shadow
    telling you the paper isn't perfectly flat against the desk */
 .letter-curl{
